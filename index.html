@@ -27,7 +27,7 @@
       content:"";
       position:fixed;
       inset:0;
-      background-image: url("./sfondo.png?v=1"); /* aumenta v=2 per forzare refresh */
+      background-image: url("./sfondo.png?v=1"); /* aumenta v=2 per forzare refresh cache */
       background-size: 100% auto;
       background-position: top center;
       background-repeat: no-repeat;
@@ -42,13 +42,12 @@
       z-index:-1;
     }
 
-    /* ===== nascondi SOLO la barra in alto di Google Translate (senza rompere il resto) ===== */
+    /* ===== NASCONDI SOLO LA BARRA IN ALTO DI GOOGLE TRANSLATE ===== */
     .goog-te-banner-frame{ display:none !important; }
     iframe.goog-te-banner-frame{ display:none !important; }
     body{ position: static !important; }
-    /* (non nascondiamo .skiptranslate perché può causare problemi) */
 
-    /* ===== LINGUA A TENDINA ===== */
+    /* ===== LINGUA A TENDINA (UNICA) ===== */
     .lang-switch{
       position: fixed;
       top: 14px;
@@ -67,18 +66,17 @@
     }
     .lang-label{
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       opacity:.95;
       user-select:none;
     }
-    /* lasciamo il select "naturale" (tendina vera) */
     .lang-select{
       padding: 8px 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.22);
       color:#fff;
-      font-weight: 700;
+      font-weight: 800;
       outline:none;
       cursor:pointer;
     }
@@ -131,7 +129,7 @@
       border: 1px solid rgba(255,255,255,0.18);
       transition: transform .08s ease, background .15s ease;
       user-select:none;
-      font-weight: 650;
+      font-weight: 700;
     }
     .btn:hover{ background: var(--glass2); }
     .btn:active{ transform: scale(0.98); }
@@ -182,10 +180,10 @@
       display:block;
     }
     .content{ padding: 12px 12px 14px; }
-    .name{ font-weight: 850; margin: 0 0 6px; }
+    .name{ font-weight: 900; margin: 0 0 6px; }
     .desc{ margin: 0 0 10px; opacity: .82; font-size: 14px; line-height: 1.35; }
     .row{ display:flex; justify-content: space-between; align-items:center; gap: 10px; }
-    .price{ font-weight: 850; }
+    .price{ font-weight: 900; }
     .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
 
     .subsections{
@@ -214,7 +212,7 @@
 
 <body>
 
-  <!-- Lingua a tendina -->
+  <!-- UNICA LINGUA A TENDINA -->
   <div class="lang-switch">
     <span class="lang-label">🌐 Lingua</span>
     <select id="langSelect" class="lang-select" aria-label="Seleziona lingua">
@@ -226,7 +224,7 @@
     </select>
   </div>
 
-  <!-- Elemento Google Translate (nascosto) -->
+  <!-- Google Translate invisibile -->
   <div id="google_translate_element" style="display:none;"></div>
 
   <!-- HOME -->
@@ -260,7 +258,6 @@
 
       <section id="antipasti" class="section">
         <h2 class="section-title">Antipasti</h2>
-
         <div class="grid">
           <div class="card">
             <img src="./carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
@@ -286,7 +283,6 @@
 
       <section id="primi" class="section">
         <h2 class="section-title">Primi</h2>
-
         <div class="grid">
           <div class="card">
             <img src="./cacioepep.jpeg" alt="Tonnarello Cacio e Pepe">
@@ -310,7 +306,6 @@
 
       <section id="insalatone" class="section">
         <h2 class="section-title">Insalatone</h2>
-
         <div class="grid">
           <div class="card">
             <img src="./caprese.jpeg" alt="Caprese">
@@ -325,7 +320,6 @@
 
       <section id="dolci" class="section">
         <h2 class="section-title">Dolci</h2>
-
         <div class="grid">
           <div class="card">
             <img src="./cheesecakenutella.png" alt="Cheesecake con Nutella">
@@ -361,6 +355,7 @@
       <!-- BEVERAGE (con Amari dentro) -->
       <section id="beverage" class="section">
         <h2 class="section-title">Beverage</h2>
+        <p class="hint">Le descrizioni si traducono. Per i nomi prodotti usa <span class="notranslate" translate="no">notranslate</span>.</p>
 
         <div class="subsections">
           <div class="sub"><h3>Vino della casa</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
@@ -383,801 +378,45 @@
     </div>
   </div>
 
-  <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
+  <footer>© <span class="notranslate" translate="no">Tonnarello</span> • Allergeni: chiedi al personale</footer>
 
   <script>
-    // ===== GOOGLE TRANSLATE (metodo stabile via cookie) =====
+    // ===== GOOGLE TRANSLATE (cookie stable) =====
     function setGoogTrans(lang){
-      // cookie usato da Google Translate
+      // /it/en ecc.
       const value = "/it/" + lang;
       document.cookie = "googtrans=" + value + ";path=/";
       document.cookie = "googtrans=" + value + ";path=/;domain=" + window.location.hostname;
       localStorage.setItem("menu_lang", lang);
-      // ricarico: è il modo più affidabile
-      window.location.reload();
+      location.reload();
+    }
+
+    function resetToItalian(){
+      document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+      localStorage.setItem("menu_lang", "it");
+      location.reload();
     }
 
     function googleTranslateElementInit() {
       new google.translate.TranslateElement(
-        {
-          pageLanguage: 'it',
-          includedLanguages: 'it,en,es,fr,de',
-          autoDisplay: false
-        },
+        { pageLanguage: 'it', includedLanguages: 'it,en,es,fr,de', autoDisplay: false },
         'google_translate_element'
       );
     }
 
-    // dropdown lingua
+    // selezione lingua (tendina)
     const sel = document.getElementById("langSelect");
     const saved = localStorage.getItem("menu_lang") || "it";
     if (sel) sel.value = saved;
 
     sel?.addEventListener("change", (e) => {
       const lang = e.target.value;
-      if (lang === "it") {
-        // torna all'italiano: reset cookie + reload
-        document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-        document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
-        localStorage.setItem("menu_lang", "it");
-        window.location.reload();
-      } else {
-        setGoogTrans(lang);
-      }
+      if (lang === "it") resetToItalian();
+      else setGoogTrans(lang);
     });
   </script>
 
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
-      border: 1px solid rgba(255,255,255,0.18);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      color:#fff;
-    }
-    .lang-label{
-      font-size: 13px;
-      font-weight: 700;
-      opacity:.95;
-      user-select:none;
-    }
-    .lang-select{
-      appearance: none;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
-      color:#fff;
-      font-weight: 700;
-      outline:none;
-      cursor:pointer;
-    }
-    .lang-select option{ color:#111; }
-
-    /* ===== HERO HOME ===== */
-    .hero{
-      min-height: 100vh;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 28px 16px 46px;
-    }
-    .hero-card{
-      width: min(980px, 100%);
-      color: var(--text);
-      background: rgba(0,0,0,0.34);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 22px 18px 16px;
-      backdrop-filter: blur(10px);
-    }
-    .hero-title{
-      margin:0;
-      font-size: clamp(34px, 6vw, 56px);
-      letter-spacing: .4px;
-    }
-    .hero-sub{
-      margin: 8px 0 14px;
-      opacity: .92;
-      line-height: 1.35;
-      font-size: 15px;
-    }
-
-    .btn-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .btn{
-      display:block;
-      text-align:center;
-      text-decoration:none;
-      color:#fff;
-      padding: 12px 12px;
-      border-radius: 999px;
-      background: var(--glass);
-      border: 1px solid rgba(255,255,255,0.18);
-      transition: transform .08s ease, background .15s ease;
-      user-select:none;
-      font-weight: 650;
-    }
-    .btn:hover{ background: var(--glass2); }
-    .btn:active{ transform: scale(0.98); }
-
-    .scroll-hint{
-      margin: 14px 0 0;
-      opacity: .88;
-      font-size: 14px;
-    }
-
-    /* ===== CONTENUTO MENU ===== */
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding: 18px 16px 70px;
-    }
-    .panel{
-      background: var(--panel);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .section{
-      padding: 8px 0 2px;
-      scroll-margin-top: 18px;
-    }
-    .section-title{
-      margin: 18px 0 10px;
-      font-size: 22px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .card{
-      background:#fff;
-      border-radius: 14px;
-      overflow:hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,.10);
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-    .card img{
-      width:100%;
-      height: 170px;
-      object-fit: cover;
-      display:block;
-    }
-    .content{ padding: 12px 12px 14px; }
-    .name{ font-weight: 850; margin: 0 0 6px; }
-    .desc{ margin: 0 0 10px; opacity: .82; font-size: 14px; line-height: 1.35; }
-    .row{ display:flex; justify-content: space-between; align-items:center; gap: 10px; }
-    .price{ font-weight: 850; }
-    .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
-
-    .subsections{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .sub{
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .sub h3{ margin: 0 0 6px; font-size: 16px; }
-    .hint{ margin:0; opacity:.75; font-size:14px; }
-
-    footer{
-      color:#fff;
-      opacity:.88;
-      text-align:center;
-      padding: 26px 16px 40px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- LINGUA A TENDINA -->
-  <div class="lang-switch">
-    <span class="lang-label">🌐 Lingua</span>
-    <select id="langSelect" class="lang-select" aria-label="Seleziona lingua">
-      <option value="it">Italiano</option>
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-    </select>
-  </div>
-
-  <!-- contenitore nascosto per Google Translate -->
-  <div id="google_translate_element" style="display:none;"></div>
-
-  <!-- HOME / HERO -->
-  <section class="hero" id="home">
-    <div class="hero-card">
-      <!-- NON TRADURRE: nome ristorante -->
-      <h1 class="hero-title notranslate" translate="no">Tonnarello</h1>
-
-      <!-- TRADUCI: testo descrizione -->
-      <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
-
-      <div class="btn-grid">
-        <a class="btn" href="#antipasti">Antipasti</a>
-        <a class="btn" href="#primi">Primi</a>
-        <a class="btn" href="#polpette">Polpette per tutti</a>
-        <a class="btn" href="#secondi">Secondi</a>
-        <a class="btn" href="#contorni">Contorni</a>
-        <a class="btn" href="#pinse">Pinse</a>
-        <a class="btn" href="#insalatone">Insalatone</a>
-        <a class="btn" href="#dolci">Dolci</a>
-        <a class="btn" href="#beverage">Beverage</a>
-      </div>
-
-      <p class="scroll-hint">⬇️ Scorri oppure clicca una categoria</p>
-    </div>
-  </section>
-
-  <!-- MENU -->
-  <div class="wrap">
-    <div class="panel">
-
-      <section id="antipasti" class="section">
-        <h2 class="section-title">Antipasti</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
-            <div class="content">
-              <!-- NON TRADURRE: nome piatto -->
-              <p class="name notranslate" translate="no">Carciofo alla Giudia</p>
-              <!-- TRADUCI: descrizione -->
-              <p class="desc">Croccante fuori, tenero dentro. Tradizione romana.</p>
-              <div class="row"><span class="tag">Specialità</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="./cestinosuppli.jpeg" alt="Cestino Supplì">
-            <div class="content">
-              <p class="name notranslate" translate="no">Cestino Supplì</p>
-              <p class="desc">Dorati e filanti, perfetti da condividere.</p>
-              <div class="row"><span class="tag">Street food</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="primi" class="section">
-        <h2 class="section-title">Primi</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./cacioepep.jpeg" alt="Tonnarello Cacio e Pepe">
-            <div class="content">
-              <p class="name notranslate" translate="no">Tonnarello Cacio e Pepe</p>
-              <p class="desc">Cremoso, intenso, con pepe macinato al momento.</p>
-              <div class="row"><span class="tag">Top</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="./lasagna.jpeg" alt="Lasagna">
-            <div class="content">
-              <p class="name notranslate" translate="no">Lasagna</p>
-              <p class="desc">Strati ricchi e gratinatura dorata.</p>
-              <div class="row"><span class="tag">Forno</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="polpette" class="section">
-        <h2 class="section-title">Polpette per tutti</h2>
-        <p class="hint">Da compilare (nomi piatti non verranno tradotti).</p>
-      </section>
-
-      <section id="secondi" class="section">
-        <h2 class="section-title">Secondi</h2>
-        <p class="hint">Da compilare.</p>
-      </section>
-
-      <section id="contorni" class="section">
-        <h2 class="section-title">Contorni</h2>
-        <p class="hint">Da compilare.</p>
-      </section>
-
-      <section id="pinse" class="section">
-        <h2 class="section-title">Pinse</h2>
-        <p class="hint">Da compilare.</p>
-      </section>
-
-      <section id="insalatone" class="section">
-        <h2 class="section-title">Insalatone</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./caprese.jpeg" alt="Caprese">
-            <div class="content">
-              <p class="name notranslate" translate="no">Caprese</p>
-              <p class="desc">Mozzarella, pomodoro, basilico e olio EVO.</p>
-              <div class="row"><span class="tag">Fresca</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="dolci" class="section">
-        <h2 class="section-title">Dolci</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./cheesecakenutella.png" alt="Cheesecake con Nutella">
-            <div class="content">
-              <p class="name notranslate" translate="no">Cheesecake con Nutella</p>
-              <p class="desc">Cremosa e golosa, con topping alla Nutella.</p>
-              <div class="row"><span class="tag">Dolcissimo</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BEVERAGE (CON AMARI DENTRO) -->
-      <section id="beverage" class="section">
-        <h2 class="section-title">Beverage</h2>
-        <p class="hint">Le descrizioni vengono tradotte, i nomi prodotti puoi marcarli come notranslate.</p>
-
-        <div class="subsections">
-          <div class="sub"><h3>Vino della casa</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini bianchi al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini rossi al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bianchi in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Rossi in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Top vini bianchi</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Top vini rossi</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bollicine</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bottigliame</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini dolci al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Caffè e tè</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Birre alla spina</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Birra in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-
-          <!-- AMARI DENTRO BEVERAGE -->
-          <div class="sub"><h3>Amari</h3><p class="hint">Inserisci qui l’elenco degli amari e i prezzi.</p></div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
-
-  <script>
-    // ===== Google Translate Widget =====
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        {
-          pageLanguage: 'it',
-          includedLanguages: 'it,en,es,fr,de',
-          autoDisplay: false
-        },
-        'google_translate_element'
-      );
-
-      // imposta lingua salvata, se esiste
-      const saved = localStorage.getItem('menu_lang') || 'it';
-      const sel = document.getElementById('langSelect');
-      if (sel) sel.value = saved;
-      setLang(saved, true);
-    }
-
-    function setLang(lang, silent=false){
-      localStorage.setItem('menu_lang', lang);
-
-      const trySet = () => {
-        const combo = document.querySelector('.goog-te-combo');
-        if (!combo) return false;
-        combo.value = lang;
-        combo.dispatchEvent(new Event('change'));
-        return true;
-      };
-
-      let attempts = 0;
-      const timer = setInterval(() => {
-        attempts++;
-        if (trySet() || attempts > 20) clearInterval(timer);
-      }, 300);
-    }
-
-    // dropdown lingua
-    document.addEventListener('change', (e) => {
-      if (e.target && e.target.id === 'langSelect') {
-        setLang(e.target.value);
-      }
-    });
-  </script>
-
-  <!-- Carica Google Translate -->
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-</body>
-</html>
-      display:flex;
-      gap:8px;
-      align-items:center;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.18);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      color: #fff;
-    }
-    .lang-title{
-      font-size: 13px;
-      font-weight: 700;
-      opacity: .95;
-      margin-right: 2px;
-      user-select:none;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .flag-btn{
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.10);
-      color:#fff;
-      border-radius: 999px;
-      padding: 6px 10px;
-      cursor:pointer;
-      font-weight: 700;
-      transition: transform .08s ease, background .15s ease;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .flag-btn:hover{ background: rgba(255,255,255,0.18); }
-    .flag-btn:active{ transform: scale(0.98); }
-    .flag{
-      font-size: 16px;
-      line-height: 1;
-    }
-    .lang-code{
-      font-size: 12px;
-      opacity:.95;
-    }
-
-    /* ===== HERO HOME ===== */
-    .hero{
-      min-height: 100vh;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 28px 16px 46px;
-    }
-    .hero-card{
-      width: min(980px, 100%);
-      color: var(--text);
-      background: rgba(0,0,0,0.34);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 22px 18px 16px;
-      backdrop-filter: blur(10px);
-    }
-    .hero-title{
-      margin:0;
-      font-size: clamp(34px, 6vw, 56px);
-      letter-spacing: .4px;
-    }
-    .hero-sub{
-      margin: 8px 0 14px;
-      opacity: .92;
-      line-height: 1.35;
-      font-size: 15px;
-    }
-
-    .btn-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .btn{
-      display:block;
-      text-align:center;
-      text-decoration:none;
-      color:#fff;
-      padding: 12px 12px;
-      border-radius: 999px;
-      background: var(--glass);
-      border: 1px solid rgba(255,255,255,0.18);
-      transition: transform .08s ease, background .15s ease;
-      user-select:none;
-      font-weight: 650;
-    }
-    .btn:hover{ background: var(--glass2); }
-    .btn:active{ transform: scale(0.98); }
-
-    .scroll-hint{
-      margin: 14px 0 0;
-      opacity: .88;
-      font-size: 14px;
-    }
-
-    /* ===== CONTENUTO MENU ===== */
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding: 18px 16px 70px;
-    }
-    .panel{
-      background: var(--panel);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .section{
-      padding: 8px 0 2px;
-      scroll-margin-top: 18px;
-    }
-    .section-title{
-      margin: 18px 0 10px;
-      font-size: 22px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .card{
-      background:#fff;
-      border-radius: 14px;
-      overflow:hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,.10);
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-    .card img{
-      width:100%;
-      height: 170px;
-      object-fit: cover;
-      display:block;
-    }
-    .content{ padding: 12px 12px 14px; }
-    .name{ font-weight: 850; margin: 0 0 6px; }
-    .desc{ margin: 0 0 10px; opacity: .82; font-size: 14px; line-height: 1.35; }
-    .row{ display:flex; justify-content: space-between; align-items:center; gap: 10px; }
-    .price{ font-weight: 850; }
-    .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
-
-    .subsections{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .sub{
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .sub h3{ margin: 0 0 6px; font-size: 16px; }
-    .hint{ margin:0; opacity:.75; font-size:14px; }
-
-    footer{
-      color:#fff;
-      opacity:.88;
-      text-align:center;
-      padding: 26px 16px 40px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- SWITCHER LINGUA (BANDIERE) -->
-  <div class="lang-switch" aria-label="Selettore lingua">
-    <div class="lang-title">🌐 Lingua</div>
-    <button class="flag-btn" type="button" onclick="setLang('it')" title="Italiano">
-      <span class="flag">🇮🇹</span><span class="lang-code">IT</span>
-    </button>
-    <button class="flag-btn" type="button" onclick="setLang('en')" title="English">
-      <span class="flag">🇬🇧</span><span class="lang-code">EN</span>
-    </button>
-    <button class="flag-btn" type="button" onclick="setLang('es')" title="Español">
-      <span class="flag">🇪🇸</span><span class="lang-code">ES</span>
-    </button>
-    <button class="flag-btn" type="button" onclick="setLang('fr')" title="Français">
-      <span class="flag">🇫🇷</span><span class="lang-code">FR</span>
-    </button>
-    <button class="flag-btn" type="button" onclick="setLang('de')" title="Deutsch">
-      <span class="flag">🇩🇪</span><span class="lang-code">DE</span>
-    </button>
-  </div>
-
-  <!-- contenitore nascosto per Google Translate -->
-  <div id="google_translate_element" style="display:none;"></div>
-
-  <!-- HOME / HERO -->
-  <section class="hero" id="home">
-    <div class="hero-card">
-      <h1 class="hero-title">Tonnarello</h1>
-      <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
-
-      <div class="btn-grid">
-        <a class="btn" href="#antipasti">Antipasti</a>
-        <a class="btn" href="#primi">Primi</a>
-        <a class="btn" href="#polpette">Polpette per tutti</a>
-        <a class="btn" href="#secondi">Secondi</a>
-        <a class="btn" href="#contorni">Contorni</a>
-        <a class="btn" href="#pinse">Pinse</a>
-        <a class="btn" href="#insalatone">Insalatone</a>
-        <a class="btn" href="#dolci">Dolci</a>
-        <a class="btn" href="#amari">Amari</a>
-        <a class="btn" href="#beverage">Beverage</a>
-      </div>
-
-      <p class="scroll-hint">⬇️ Scorri oppure clicca una categoria</p>
-    </div>
-  </section>
-
-  <!-- MENU -->
-  <div class="wrap">
-    <div class="panel">
-
-      <section id="antipasti" class="section">
-        <h2 class="section-title">Antipasti</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
-            <div class="content">
-              <p class="name">Carciofo alla Giudia</p>
-              <p class="desc">Croccante fuori, tenero dentro. Tradizione romana.</p>
-              <div class="row"><span class="tag">Specialità</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="./cestinosuppli.jpeg" alt="Cestino Supplì">
-            <div class="content">
-              <p class="name">Cestino Supplì</p>
-              <p class="desc">Dorati e filanti, perfetti da condividere.</p>
-              <div class="row"><span class="tag">Street food</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="primi" class="section">
-        <h2 class="section-title">Primi</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./cacioepep.jpeg" alt="Tonnarello Cacio e Pepe">
-            <div class="content">
-              <p class="name">Tonnarello Cacio e Pepe</p>
-              <p class="desc">Cremoso, intenso, con pepe macinato al momento.</p>
-              <div class="row"><span class="tag">Top</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <img src="./lasagna.jpeg" alt="Lasagna">
-            <div class="content">
-              <p class="name">Lasagna</p>
-              <p class="desc">Strati ricchi e gratinatura dorata.</p>
-              <div class="row"><span class="tag">Forno</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="insalatone" class="section">
-        <h2 class="section-title">Insalatone</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./caprese.jpeg" alt="Caprese">
-            <div class="content">
-              <p class="name">Caprese</p>
-              <p class="desc">Mozzarella, pomodoro, basilico e olio EVO.</p>
-              <div class="row"><span class="tag">Fresca</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="dolci" class="section">
-        <h2 class="section-title">Dolci</h2>
-        <div class="grid">
-          <div class="card">
-            <img src="./cheesecakenutella.png" alt="Cheesecake con Nutella">
-            <div class="content">
-              <p class="name">Cheesecake con Nutella</p>
-              <p class="desc">Cremosa e golosa, con topping alla Nutella.</p>
-              <div class="row"><span class="tag">Dolcissimo</span><span class="price">€ [prezzo]</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="beverage" class="section">
-        <h2 class="section-title">Beverage</h2>
-        <div class="subsections">
-          <div class="sub"><h3>Vino della casa</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini bianchi al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini rossi al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bianchi in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Rossi in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Top vini bianchi</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Top vini rossi</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bollicine</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Bottigliame</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Vini dolci al bicchiere</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Caffè e tè</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Birre alla spina</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-          <div class="sub"><h3>Birra in bottiglia</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
-        </div>
-      </section>
-
-      <section id="polpette" class="section"><h2 class="section-title">Polpette per tutti</h2><p class="hint">Da compilare.</p></section>
-      <section id="secondi" class="section"><h2 class="section-title">Secondi</h2><p class="hint">Da compilare.</p></section>
-      <section id="contorni" class="section"><h2 class="section-title">Contorni</h2><p class="hint">Da compilare.</p></section>
-      <section id="pinse" class="section"><h2 class="section-title">Pinse</h2><p class="hint">Da compilare.</p></section>
-      <section id="amari" class="section"><h2 class="section-title">Amari</h2><p class="hint">Da compilare.</p></section>
-
-    </div>
-  </div>
-
-  <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
-
-  <script>
-    // ===== Google Translate Widget =====
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        {
-          pageLanguage: 'it',
-          includedLanguages: 'it,en,es,fr,de',
-          autoDisplay: false
-        },
-        'google_translate_element'
-      );
-
-      // Applica lingua salvata (se presente)
-      const saved = localStorage.getItem('menu_lang');
-      if (saved) setLang(saved, true);
-    }
-
-    // Imposta lingua tramite il menu interno di Google Translate
-    function setLang(lang, silent=false) {
-      localStorage.setItem('menu_lang', lang);
-
-      const trySet = () => {
-        const combo = document.querySelector('.goog-te-combo');
-        if (!combo) return false;
-        combo.value = lang;
-        combo.dispatchEvent(new Event('change'));
-        return true;
-      };
-
-      // prova subito, altrimenti ritenta qualche volta (widget può arrivare in ritardo)
-      let attempts = 0;
-      const timer = setInterval(() => {
-        attempts++;
-        if (trySet() || attempts > 15) clearInterval(timer);
-      }, 300);
-
-      if (!silent) {
-        // piccolo feedback (facoltativo)
-        // alert('Lingua impostata: ' + lang.toUpperCase());
-      }
-    }
-  </script>
-
-  <!-- Carica Google Translate -->
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </body>
 </html>
