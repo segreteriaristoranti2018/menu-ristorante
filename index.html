@@ -24,16 +24,23 @@
       min-height:100vh;
       background:#000; /* riempie eventuali spazi */
     }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      background-image: url('./sfondo.png'); /* <-- il tuo file */
-      background-size: contain;             /* <-- SI VEDE TUTTO */
-      background-position: top center;      /* <-- la scritta resta in alto */
-      background-repeat: no-repeat;
-      z-index:-2;
-    }
+ body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+
+  /* cache-busting: forza il browser a ricaricare l’immagine */
+  background-image: url('./sfondo.png?v=3');
+
+  /* MOSTRA TUTTA LA SCRITTA (niente tagli) */
+  background-size: 100% auto;     /* adatta alla larghezza */
+  background-position: top center; /* attaccato in alto */
+  background-repeat: no-repeat;
+
+  background-color: #000;          /* riempie lo spazio sotto */
+  z-index:-2;
+}
+
     /* leggero velo per leggibilità dei testi sopra */
     body::after{
       content:"";
