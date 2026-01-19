@@ -8,26 +8,27 @@
   <style>
     :root{
       --glass: rgba(255,255,255,0.14);
-      --glass2: rgba(255,255,255,0.20);
+      --glass2: rgba(255,255,255,0.22);
       --text: #fff;
       --panel: rgba(255,255,255,0.92);
       --shadow: 0 14px 40px rgba(0,0,0,.28);
     }
     html{ scroll-behavior:smooth; }
-
-    /* ===== SFONDO ===== */
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       min-height:100vh;
       background:#000;
-      top:0 !important; /* evita spostamenti con Google Translate */
+      top:0 !important; /* evita spostamenti */
+      position: static !important;
     }
+
+    /* ===== SFONDO ===== */
     body::before{
       content:"";
       position:fixed;
       inset:0;
-      background-image: url("./sfondo.png?v=1"); /* aumenta v=2 per forzare refresh cache */
+      background-image: url("./sfondo.png?v=2"); /* cambia v=3 se serve forzare cache */
       background-size: 100% auto;
       background-position: top center;
       background-repeat: no-repeat;
@@ -42,10 +43,39 @@
       z-index:-1;
     }
 
-    /* ===== NASCONDI SOLO LA BARRA IN ALTO DI GOOGLE TRANSLATE ===== */
-    .goog-te-banner-frame{ display:none !important; }
-    iframe.goog-te-banner-frame{ display:none !important; }
-    body{ position: static !important; }
+    /* ============================================================
+       NASCONDI COMPLETAMENTE LA BARRA DI GOOGLE TRANSLATE (foto)
+       (banner/iframe injected). Questo mostra SOLO la tua tendina.
+       ============================================================ */
+    iframe.goog-te-banner-frame,
+    .goog-te-banner-frame,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-text-highlight,
+    .goog-te-spinner-pos,
+    .goog-te-ftab,
+    .goog-te-menu-frame,
+    .goog-te-menu2,
+    .goog-te-menu-value,
+    .goog-te-gadget,
+    .goog-te-gadget * {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      border: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* in alcuni casi l’iframe ha solo src translate => lo nascondiamo così */
+    iframe[src*="translate.google"],
+    iframe[src*="translate.googleapis"]{
+      display:none !important;
+      visibility:hidden !important;
+      height:0 !important;
+      width:0 !important;
+    }
 
     /* ===== LINGUA A TENDINA (UNICA) ===== */
     .lang-switch{
@@ -111,7 +141,6 @@
       line-height: 1.35;
       font-size: 15px;
     }
-
     .btn-grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -133,7 +162,6 @@
     }
     .btn:hover{ background: var(--glass2); }
     .btn:active{ transform: scale(0.98); }
-
     .scroll-hint{
       margin: 14px 0 0;
       opacity: .88;
@@ -152,14 +180,8 @@
       padding: 18px;
       box-shadow: var(--shadow);
     }
-    .section{
-      padding: 8px 0 2px;
-      scroll-margin-top: 18px;
-    }
-    .section-title{
-      margin: 18px 0 10px;
-      font-size: 22px;
-    }
+    .section{ padding: 8px 0 2px; scroll-margin-top: 18px; }
+    .section-title{ margin: 18px 0 10px; font-size: 22px; }
 
     .grid{
       display:grid;
@@ -212,7 +234,7 @@
 
 <body>
 
-  <!-- UNICA LINGUA A TENDINA -->
+  <!-- UNICA lingua a tendina -->
   <div class="lang-switch">
     <span class="lang-label">🌐 Lingua</span>
     <select id="langSelect" class="lang-select" aria-label="Seleziona lingua">
@@ -224,16 +246,13 @@
     </select>
   </div>
 
-  <!-- Google Translate invisibile -->
-  <div id="google_translate_element" style="display:none;"></div>
+  <!-- Google Translate: lo teniamo OFFSCREEN (non display:none) -->
+  <div id="google_translate_element" style="position:fixed; left:-9999px; top:-9999px;"></div>
 
   <!-- HOME -->
   <section class="hero" id="home">
     <div class="hero-card">
-      <!-- NON tradurre -->
       <h1 class="hero-title notranslate" translate="no">Tonnarello</h1>
-
-      <!-- Tradurre -->
       <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
 
       <div class="btn-grid">
@@ -259,12 +278,11 @@
       <section id="antipasti" class="section">
         <h2 class="section-title">Antipasti</h2>
         <div class="grid">
+
           <div class="card">
             <img src="./carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
             <div class="content">
-              <!-- NON tradurre: nome piatto -->
               <p class="name"><span class="notranslate" translate="no">Carciofo alla Giudia</span></p>
-              <!-- Tradurre: descrizione -->
               <p class="desc">Croccante fuori, tenero dentro. Tradizione romana.</p>
               <div class="row"><span class="tag">Specialità</span><span class="price">€ [prezzo]</span></div>
             </div>
@@ -278,12 +296,14 @@
               <div class="row"><span class="tag">Street food</span><span class="price">€ [prezzo]</span></div>
             </div>
           </div>
+
         </div>
       </section>
 
       <section id="primi" class="section">
         <h2 class="section-title">Primi</h2>
         <div class="grid">
+
           <div class="card">
             <img src="./cacioepep.jpeg" alt="Tonnarello Cacio e Pepe">
             <div class="content">
@@ -301,6 +321,7 @@
               <div class="row"><span class="tag">Forno</span><span class="price">€ [prezzo]</span></div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -352,10 +373,8 @@
         <p class="hint">Da compilare.</p>
       </section>
 
-      <!-- BEVERAGE (con Amari dentro) -->
       <section id="beverage" class="section">
         <h2 class="section-title">Beverage</h2>
-        <p class="hint">Le descrizioni si traducono. Per i nomi prodotti usa <span class="notranslate" translate="no">notranslate</span>.</p>
 
         <div class="subsections">
           <div class="sub"><h3>Vino della casa</h3><p class="hint">Inserisci prodotti e prezzi.</p></div>
@@ -381,16 +400,14 @@
   <footer>© <span class="notranslate" translate="no">Tonnarello</span> • Allergeni: chiedi al personale</footer>
 
   <script>
-    // ===== GOOGLE TRANSLATE (cookie stable) =====
+    // ===== GOOGLE TRANSLATE (cookie stabile) =====
     function setGoogTrans(lang){
-      // /it/en ecc.
       const value = "/it/" + lang;
       document.cookie = "googtrans=" + value + ";path=/";
       document.cookie = "googtrans=" + value + ";path=/;domain=" + window.location.hostname;
       localStorage.setItem("menu_lang", lang);
       location.reload();
     }
-
     function resetToItalian(){
       document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
       document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
@@ -405,7 +422,7 @@
       );
     }
 
-    // selezione lingua (tendina)
+    // tendina lingua
     const sel = document.getElementById("langSelect");
     const saved = localStorage.getItem("menu_lang") || "it";
     if (sel) sel.value = saved;
