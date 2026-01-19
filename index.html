@@ -7,14 +7,16 @@
 
   <style>
     :root{
-      --glass: rgba(255,255,255,0.12);
-      --glass2: rgba(255,255,255,0.16);
+      --glass: rgba(255,255,255,0.14);
+      --glass2: rgba(255,255,255,0.20);
       --text: #fff;
       --panel: rgba(255,255,255,0.92);
       --shadow: 0 14px 40px rgba(0,0,0,.28);
     }
 
-    /* ===== SFONDO FULL PAGE ===== */
+    html{ scroll-behavior: smooth; }
+
+    /* ===== SFONDO FULL PAGE (ABBASSATO) ===== */
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -25,9 +27,9 @@
       content:"";
       position:fixed;
       inset:0;
-      background-image: url('./sfondo.png'); /* <-- CAMBIA QUI col nome ESATTO */
+      background-image: url('./sfondo.png'); /* <-- il tuo file */
       background-size: cover;
-      background-position: center;
+      background-position: center 82%;       /* <-- SFONDO PIU' IN BASSO (cambia 70-90 se vuoi) */
       background-repeat: no-repeat;
       z-index:-2;
     }
@@ -35,7 +37,7 @@
       content:"";
       position:fixed;
       inset:0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.45);          /* velo scuro per leggere bene */
       z-index:-1;
     }
 
@@ -50,7 +52,7 @@
     .hero-card{
       width: min(980px, 100%);
       color: var(--text);
-      background: rgba(0,0,0,0.32);
+      background: rgba(0,0,0,0.34);
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: 22px;
       box-shadow: var(--shadow);
@@ -61,11 +63,13 @@
       margin:0;
       font-size: clamp(34px, 6vw, 56px);
       letter-spacing: .4px;
+      text-transform: uppercase;
     }
     .hero-sub{
       margin: 8px 0 18px;
-      opacity: .9;
+      opacity: .92;
       line-height: 1.35;
+      font-size: 15px;
     }
 
     /* bottoni categorie */
@@ -86,14 +90,14 @@
       border: 1px solid rgba(255,255,255,0.18);
       transition: transform .08s ease, background .15s ease;
       user-select:none;
-      font-weight: 600;
+      font-weight: 650;
     }
     .btn:hover{ background: var(--glass2); }
     .btn:active{ transform: scale(0.98); }
 
     .scroll-hint{
       margin: 16px 0 0;
-      opacity: .85;
+      opacity: .88;
       font-size: 14px;
     }
 
@@ -109,9 +113,10 @@
       padding: 18px;
       box-shadow: var(--shadow);
     }
+
     .section{
       padding: 8px 0 2px;
-      scroll-margin-top: 20px;
+      scroll-margin-top: 18px;
     }
     .section-title{
       margin: 18px 0 10px;
@@ -138,10 +143,10 @@
       display:block;
     }
     .content{ padding: 12px 12px 14px; }
-    .name{ font-weight: 800; margin: 0 0 6px; }
-    .desc{ margin: 0 0 10px; opacity: .8; font-size: 14px; line-height: 1.35; }
+    .name{ font-weight: 850; margin: 0 0 6px; }
+    .desc{ margin: 0 0 10px; opacity: .82; font-size: 14px; line-height: 1.35; }
     .row{ display:flex; justify-content: space-between; align-items:center; gap: 10px; }
-    .price{ font-weight: 800; }
+    .price{ font-weight: 850; }
     .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
 
     /* sottosezioni beverage */
@@ -162,7 +167,7 @@
 
     footer{
       color:#fff;
-      opacity:.85;
+      opacity:.88;
       text-align:center;
       padding: 26px 16px 40px;
     }
@@ -246,22 +251,22 @@
 
       <section id="polpette" class="section">
         <h2 class="section-title">Polpette per tutti</h2>
-        <p class="hint">Dimmi le polpette e i prezzi e te le metto qui come card.</p>
+        <p class="hint">Scrivimi i nomi delle polpette + prezzi e le metto qui come card.</p>
       </section>
 
       <section id="secondi" class="section">
         <h2 class="section-title">Secondi</h2>
-        <p class="hint">Dimmi i secondi e i prezzi e te li impagino come card o lista.</p>
+        <p class="hint">Scrivimi secondi + prezzi e li aggiungo.</p>
       </section>
 
       <section id="contorni" class="section">
         <h2 class="section-title">Contorni</h2>
-        <p class="hint">Dimmi i contorni e i prezzi e te li impagino come card o lista.</p>
+        <p class="hint">Scrivimi contorni + prezzi e li aggiungo.</p>
       </section>
 
       <section id="pinse" class="section">
         <h2 class="section-title">Pinse</h2>
-        <p class="hint">Dimmi le pinse e i prezzi e te le impagino.</p>
+        <p class="hint">Scrivimi pinse + prezzi e le aggiungo.</p>
       </section>
 
       <section id="insalatone" class="section">
@@ -324,4 +329,3 @@
   <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
 </body>
 </html>
-
