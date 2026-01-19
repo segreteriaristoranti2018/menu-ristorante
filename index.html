@@ -6,6 +6,14 @@
   <title>Menu – Tonnarello</title>
 
   <style>
+    :root{
+      --glass: rgba(255,255,255,0.12);
+      --glass2: rgba(255,255,255,0.16);
+      --text: #fff;
+      --panel: rgba(255,255,255,0.92);
+      --shadow: 0 14px 40px rgba(0,0,0,.28);
+    }
+
     /* ===== SFONDO FULL PAGE ===== */
     body{
       margin:0;
@@ -17,7 +25,7 @@
       content:"";
       position:fixed;
       inset:0;
-      background-image: url('./sfondo.png'); /* <-- METTI QUI IL NOME ESATTO */
+      background-image: url('./sfondo.png'); /* <-- CAMBIA QUI col nome ESATTO */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -31,56 +39,86 @@
       z-index:-1;
     }
 
-    .wrap{ max-width:1100px; margin:0 auto; padding:18px 16px 60px; }
-
-    /* ===== NAV ===== */
-    .nav{
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(10px);
-      background: rgba(17,17,17,0.75);
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-    .nav .wrap{
-      padding: 10px 16px;
+    /* ===== HERO HOME ===== */
+    .hero{
+      min-height: 100vh;
       display:flex;
-      gap:10px;
-      overflow:auto;
       align-items:center;
-      scrollbar-width: none;
+      justify-content:center;
+      padding: 28px 16px;
     }
-    .nav .wrap::-webkit-scrollbar{ display:none; }
-    .nav a{
-      color:#fff;
-      text-decoration:none;
-      font-size:14px;
-      padding:8px 12px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.10);
-      white-space: nowrap;
+    .hero-card{
+      width: min(980px, 100%);
+      color: var(--text);
+      background: rgba(0,0,0,0.32);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 26px 18px 18px;
+      backdrop-filter: blur(10px);
     }
-    .nav a:hover{ background: rgba(255,255,255,0.18); }
+    .hero-title{
+      margin:0;
+      font-size: clamp(34px, 6vw, 56px);
+      letter-spacing: .4px;
+    }
+    .hero-sub{
+      margin: 8px 0 18px;
+      opacity: .9;
+      line-height: 1.35;
+    }
 
-    /* ===== HEADER ===== */
-    header{ padding: 56px 0 18px; color:#fff; }
-    header h1{ margin:0 0 6px; font-size:42px; letter-spacing:.3px; }
-    header p{ margin:0; opacity:.85; }
-
-    /* ===== PANNELLO CONTENUTO ===== */
-    .panel{
-      background: rgba(255,255,255,0.92);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    /* bottoni categorie */
+    .btn-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
       margin-top: 12px;
     }
+    .btn{
+      display:block;
+      text-align:center;
+      text-decoration:none;
+      color:#fff;
+      padding: 12px 12px;
+      border-radius: 999px;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform .08s ease, background .15s ease;
+      user-select:none;
+      font-weight: 600;
+    }
+    .btn:hover{ background: var(--glass2); }
+    .btn:active{ transform: scale(0.98); }
 
-    /* ===== SEZIONI ===== */
-    .section{ padding: 6px 0 0; scroll-margin-top: 80px; }
-    .section-title{ margin: 14px 0 10px; font-size: 22px; }
+    .scroll-hint{
+      margin: 16px 0 0;
+      opacity: .85;
+      font-size: 14px;
+    }
 
-    /* ===== CARD MENU (foto + descrizione + prezzo) ===== */
+    /* ===== CONTENUTO MENU ===== */
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 18px 16px 70px;
+    }
+    .panel{
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .section{
+      padding: 8px 0 2px;
+      scroll-margin-top: 20px;
+    }
+    .section-title{
+      margin: 18px 0 10px;
+      font-size: 22px;
+    }
+
+    /* cards piatti */
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -90,7 +128,7 @@
       background:#fff;
       border-radius: 14px;
       overflow:hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,.10);
       border: 1px solid rgba(0,0,0,0.06);
     }
     .card img{
@@ -106,7 +144,7 @@
     .price{ font-weight: 800; }
     .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
 
-    /* ===== SOTTOSEZIONI BEVERAGE ===== */
+    /* sottosezioni beverage */
     .subsections{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -132,27 +170,32 @@
 </head>
 
 <body>
-  <nav class="nav">
-    <div class="wrap">
-      <a href="#antipasti">Antipasti</a>
-      <a href="#primi">Primi</a>
-      <a href="#polpette">Polpette per tutti</a>
-      <a href="#secondi">Secondi</a>
-      <a href="#contorni">Contorni</a>
-      <a href="#pinse">Pinse</a>
-      <a href="#insalatone">Insalatone</a>
-      <a href="#dolci">Dolci</a>
-      <a href="#amari">Amari</a>
-      <a href="#beverage">Beverage</a>
+
+  <!-- HOME / HERO -->
+  <section class="hero" id="home">
+    <div class="hero-card">
+      <h1 class="hero-title">Tonnarello</h1>
+      <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
+
+      <div class="btn-grid">
+        <a class="btn" href="#antipasti">Antipasti</a>
+        <a class="btn" href="#primi">Primi</a>
+        <a class="btn" href="#polpette">Polpette per tutti</a>
+        <a class="btn" href="#secondi">Secondi</a>
+        <a class="btn" href="#contorni">Contorni</a>
+        <a class="btn" href="#pinse">Pinse</a>
+        <a class="btn" href="#insalatone">Insalatone</a>
+        <a class="btn" href="#dolci">Dolci</a>
+        <a class="btn" href="#amari">Amari</a>
+        <a class="btn" href="#beverage">Beverage</a>
+      </div>
+
+      <p class="scroll-hint">⬇️ Scorri oppure clicca una categoria</p>
     </div>
-  </nav>
+  </section>
 
+  <!-- MENU -->
   <div class="wrap">
-    <header>
-      <h1>Tonnarello</h1>
-      <p>Menu • Tel: [inserisci numero] • Indirizzo: [inserisci via]</p>
-    </header>
-
     <div class="panel">
 
       <section id="antipasti" class="section">
@@ -174,7 +217,7 @@
               <p class="desc">Dorati e filanti, perfetti da condividere.</p>
               <div class="row"><span class="tag">Street food</span><span class="price">€ [prezzo]</span></div>
             </div>
-          </esection>
+          </div>
         </div>
       </section>
 
@@ -203,22 +246,22 @@
 
       <section id="polpette" class="section">
         <h2 class="section-title">Polpette per tutti</h2>
-        <p class="hint">Aggiungi qui le polpette e i prezzi (posso impaginarle come card).</p>
+        <p class="hint">Dimmi le polpette e i prezzi e te le metto qui come card.</p>
       </section>
 
       <section id="secondi" class="section">
         <h2 class="section-title">Secondi</h2>
-        <p class="hint">Aggiungi qui i secondi e i prezzi.</p>
+        <p class="hint">Dimmi i secondi e i prezzi e te li impagino come card o lista.</p>
       </section>
 
       <section id="contorni" class="section">
         <h2 class="section-title">Contorni</h2>
-        <p class="hint">Aggiungi qui i contorni e i prezzi.</p>
+        <p class="hint">Dimmi i contorni e i prezzi e te li impagino come card o lista.</p>
       </section>
 
       <section id="pinse" class="section">
         <h2 class="section-title">Pinse</h2>
-        <p class="hint">Aggiungi qui le pinse e i prezzi.</p>
+        <p class="hint">Dimmi le pinse e i prezzi e te le impagino.</p>
       </section>
 
       <section id="insalatone" class="section">
@@ -281,3 +324,4 @@
   <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
 </body>
 </html>
+
