@@ -16,28 +16,30 @@
 
     html{ scroll-behavior: smooth; }
 
-    /* ===== SFONDO FULL PAGE (ABBASSATO) ===== */
+    /* ===== SFONDO SEMPRE INTERO (NO TAGLI) ===== */
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:#111;
       min-height:100vh;
+      background:#000; /* riempie eventuali spazi */
     }
     body::before{
       content:"";
       position:fixed;
       inset:0;
       background-image: url('./sfondo.png'); /* <-- il tuo file */
-      background-size: cover;
-      background-position: center 82%;       /* <-- SFONDO PIU' IN BASSO (cambia 70-90 se vuoi) */
+      background-size: contain;             /* <-- SI VEDE TUTTO */
+      background-position: top center;      /* <-- la scritta resta in alto */
       background-repeat: no-repeat;
       z-index:-2;
     }
+    /* leggero velo per leggibilità dei testi sopra */
     body::after{
       content:"";
       position:fixed;
       inset:0;
-      background: rgba(0,0,0,0.45);          /* velo scuro per leggere bene */
+      background: rgba(0,0,0,0.35);
       z-index:-1;
     }
 
@@ -45,9 +47,9 @@
     .hero{
       min-height: 100vh;
       display:flex;
-      align-items:center;
+      align-items:flex-end; /* card più in basso come nel tuo screenshot */
       justify-content:center;
-      padding: 28px 16px;
+      padding: 28px 16px 46px;
     }
     .hero-card{
       width: min(980px, 100%);
@@ -56,17 +58,16 @@
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: 22px;
       box-shadow: var(--shadow);
-      padding: 26px 18px 18px;
+      padding: 22px 18px 16px;
       backdrop-filter: blur(10px);
     }
     .hero-title{
       margin:0;
       font-size: clamp(34px, 6vw, 56px);
       letter-spacing: .4px;
-      text-transform: uppercase;
     }
     .hero-sub{
-      margin: 8px 0 18px;
+      margin: 8px 0 14px;
       opacity: .92;
       line-height: 1.35;
       font-size: 15px;
@@ -77,7 +78,7 @@
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 10px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .btn{
       display:block;
@@ -96,7 +97,7 @@
     .btn:active{ transform: scale(0.98); }
 
     .scroll-hint{
-      margin: 16px 0 0;
+      margin: 14px 0 0;
       opacity: .88;
       font-size: 14px;
     }
