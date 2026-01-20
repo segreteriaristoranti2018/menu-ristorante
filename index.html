@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tonnarello – Menu</title>
+  <title>Menu – Tonnarello</title>
 
   <style>
     :root{
@@ -19,8 +19,6 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       min-height:100vh;
       background:#000;
-      top:0 !important;
-      position: static !important;
     }
 
     /* ===== SFONDO ===== */
@@ -28,9 +26,9 @@
       content:"";
       position:fixed;
       inset:0;
-      background-image: url("./sfondo.png?v=5");
+      background-image: url("./sfondo.png");
       background-size: 100% auto;
-      background-position: top center; /* mostra bene la scritta in alto */
+      background-position: top center;
       background-repeat: no-repeat;
       background-color:#000;
       z-index:-2;
@@ -43,7 +41,7 @@
       z-index:-1;
     }
 
-    /* ===== HOME ===== */
+    /* ===== HERO ===== */
     .hero{
       min-height: 100vh;
       display:flex;
@@ -52,7 +50,7 @@
       padding: 28px 16px 46px;
     }
     .hero-card{
-      width: min(980px, 100%);
+      width: min(1100px, 100%);
       color: var(--text);
       background: rgba(0,0,0,0.34);
       border: 1px solid rgba(255,255,255,0.18);
@@ -101,7 +99,7 @@
 
     /* ===== CONTENUTO ===== */
     .wrap{
-      max-width:1100px;
+      max-width:1200px;
       margin:0 auto;
       padding: 18px 16px 70px;
     }
@@ -131,7 +129,7 @@
       height: 170px;
       object-fit: cover;
       display:block;
-      background:#f3f3f3;
+      background:#f2f2f2;
     }
     .content{ padding: 12px 12px 14px; }
     .name{ font-weight: 900; margin: 0 0 6px; }
@@ -140,29 +138,61 @@
     .price{ font-weight: 900; }
     .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
 
+    .list{
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.6;
+    }
+    .list li{
+      margin: 6px 0;
+    }
+    .muted{ opacity:.75; }
+
     footer{
       color:#fff;
       opacity:.88;
       text-align:center;
       padding: 26px 16px 40px;
     }
+
+    /* piccola barra “torna su” */
+    .toplink{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 9999;
+      text-decoration:none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.18);
+      color:#fff;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      font-weight: 800;
+    }
   </style>
 </head>
 
 <body>
+  <a class="toplink" href="#home">↑ Home</a>
 
   <!-- HOME -->
   <section class="hero" id="home">
     <div class="hero-card">
-      <h1 class="hero-title notranslate" translate="no">Tonnarello</h1>
-      <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
+      <h1 class="hero-title">Tonnarello</h1>
+      <p class="hero-sub">Menù digitale • Tocca una categoria per vedere i piatti</p>
 
       <div class="btn-grid">
         <a class="btn" href="#antipasti">Antipasti</a>
         <a class="btn" href="#primi">Primi</a>
         <a class="btn" href="#polpette">Polpette per tutti</a>
         <a class="btn" href="#secondi">Secondi</a>
+        <a class="btn" href="#contorni">Contorni</a>
+        <a class="btn" href="#pinse">Pinse</a>
+        <a class="btn" href="#insalatone">Insalatone</a>
         <a class="btn" href="#dolci">Dolci</a>
+        <a class="btn" href="#beverage">Beverage</a>
       </div>
 
       <p class="scroll-hint">⬇️ Scorri oppure clicca una categoria</p>
@@ -179,51 +209,64 @@
         <div class="grid">
 
           <div class="card">
-            <img src="img/piatti/cartocciocalamari.jpeg" alt="Cartoccio Calamari">
+            <img src="./img/piatti/cartocciocalamari.jpeg" alt="Cartoccio Calamari">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Cartoccio Calamari</span></p>
-              <p class="desc">Frittura di calamari servita in cartoccio, croccante e leggera.</p>
-              <div class="row"><span class="tag">Antipasto</span><span class="price">€18,5</span></div>
+              <p class="name">Cartoccio Calamari</p>
+              <p class="desc">Calamari dorati in cartoccio.</p>
+              <div class="row"><span class="tag">Antipasto</span><span class="price">€ 18,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/cestinosuppli.jpeg" alt="Cestino Supplì">
+            <img src="./img/piatti/cestinosuppli.jpeg" alt="Cestino Supplì">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Cestino Supplì</span></p>
-              <p class="desc">Supplì dorati e filanti, perfetti da condividere.</p>
-              <div class="row"><span class="tag">Antipasto</span><span class="price">€ [10,5]</span></div>
+              <p class="name">Cestino Supplì (mignon)</p>
+              <p class="desc">Selezione di supplì/crocchette (dal menù).</p>
+              <div class="row"><span class="tag">Antipasto</span><span class="price">€ 16</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/patatecacioepep.jpeg" alt="Le nostre patate Cacio e Pepe">
+            <img src="./img/piatti/patatecacioepep.jpeg" alt="Patate Cacio e Pepe">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Le nostre patate Cacio e Pepe</span></p>
-              <p class="desc">Patate croccanti con crema di cacio e pepe.</p>
-              <div class="row"><span class="tag">Antipasto</span><span class="price">€ [8,5]</span></div>
+              <p class="name">Patate Cacio e Pep</p>
+              <p class="desc">Le nostre patate “cacio e pepe”.</p>
+              <div class="row"><span class="tag">Antipasto</span><span class="price">€ 8,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/prosciuttoebufala.jpeg" alt="Prosciutto e Bufala">
+            <img src="./img/piatti/prosciuttoebufala.jpeg" alt="Prosciutto e Bufala">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Prosciutto e Bufala</span></p>
-              <p class="desc">Prosciutto e mozzarella di bufala, semplice e irresistibile.</p>
-              <div class="row"><span class="tag">Antipasto</span><span class="price">€ [14,5]</span></div>
+              <p class="name">Prosciutto e Bufala</p>
+              <p class="desc">Prosciutto crudo e mozzarella di latte di bufala.</p>
+              <div class="row"><span class="tag">Antipasto</span><span class="price">€ 14,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
+            <img src="./img/piatti/carciofoallagiudia.jpeg" alt="Carciofo alla Giudia">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Carciofo alla Giudia</span></p>
-              <p class="desc">Carciofo alla romana in stile giudia, croccante fuori e tenero dentro.</p>
-              <div class="row"><span class="tag">Specialità</span><span class="price">€ [prezzo]</span></div>
+              <p class="name">Carciofo alla Giudia</p>
+              <p class="desc">Carciofo in stile giudia.</p>
+              <div class="row"><span class="tag">Specialità</span><span class="price">€ 9,5</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <img src="./img/piatti/caprese.jpeg" alt="Caprese">
+            <div class="content">
+              <p class="name">Caprese</p>
+              <p class="desc">Mozzarella di bufala e pomodoro.</p>
+              <div class="row"><span class="tag">Fresca</span><span class="price">€ 13</span></div>
             </div>
           </div>
 
         </div>
+
+        <p class="muted" style="margin-top:14px;">
+          Altri antipasti presenti nel PDF (da aggiungere se vuoi): Tris di bruschette (€ 9,5), Tagliere genuino (€ 22), Focaccia (€ 6,5), Pane (€ 3), Extra salsa marinara (+€ 3).
+        </p>
       </section>
 
       <!-- PRIMI -->
@@ -232,74 +275,74 @@
         <div class="grid">
 
           <div class="card">
-            <img src="img/piatti/rigatonialpestoconpinoliepomodorini.jpeg" alt="Rigatoni al pesto con pinoli e pomodorini">
+            <img src="./img/piatti/cacioepep.jpeg" alt="Tonnarello Cacio e Pepe">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Rigatoni al pesto con pinoli e pomodorini</span></p>
-              <p class="desc">Pesto profumato, pinoli tostati e pomodorini.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [12,5]</span></div>
+              <p class="name">Tonnarello Cacio e Pepe</p>
+              <p class="desc">Cremoso e intenso.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 11</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarelliamatriciana.jpeg" alt="Tonnarelli Amatriciana">
+            <img src="./img/piatti/tonnarellicarbonara.jpeg" alt="Tonnarelli Carbonara">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarelli Amatriciana</span></p>
-              <p class="desc">Sugo all’amatriciana ricco e saporito.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [12,5]</span></div>
+              <p class="name">Tonnarelli Carbonara</p>
+              <p class="desc">Secondo tradizione.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 13</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarellicarbonara.jpeg" alt="Tonnarelli Carbonara">
+            <img src="./img/piatti/tonnarellononnanadia.jpeg" alt="Tonnarello Nonna Nadia">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarelli Carbonara</span></p>
-              <p class="desc">Cremosa, con guanciale e pecorino.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [13]</span></div>
+              <p class="name">Tonnarello Nonna Nadia</p>
+              <p class="desc">Ricetta della casa.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 13</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarellononnanadia.jpeg" alt="Tonnarello Nonna Nadia">
+            <img src="./img/piatti/tonnarelliamatriciana.jpeg" alt="Tonnarello all'Amatriciana">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarello Nonna Nadia</span></p>
-              <p class="desc">Ricetta di casa, sapore autentico.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [13]</span></div>
+              <p class="name">Tonnarello all’Amatriciana</p>
+              <p class="desc">Classico romano.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 12,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarelloalsugo.jpeg" alt="Tonnarello al Sugo">
+            <img src="./img/piatti/tonnarelligrigia.jpeg" alt="Tonnarello Gricia">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarello al Sugo</span></p>
-              <p class="desc">Sugo semplice e gustoso, tradizione romana.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ []</span></div>
+              <p class="name">Tonnarello Gricia</p>
+              <p class="desc">Gricia tradizionale.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 12</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarelligrigia.jpeg" alt="Tonnarelli Grigia">
+            <img src="./img/piatti/rigatonialpestoconpinoliepomodorini.jpeg" alt="Rigatoni al Pesto con Pinoli e Pomodorini">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarelli Grigia</span></p>
-              <p class="desc">Guanciale, pepe e pecorino: intensa e cremosa.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [12]</span></div>
+              <p class="name">Rigatoni al Pesto</p>
+              <p class="desc">Con pinoli e pomodorini.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ 12,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/lasagna.jpeg" alt="Lasagna">
+            <img src="./img/piatti/lasagna.jpeg" alt="Lasagna">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Lasagna</span></p>
-              <p class="desc">Strati ricchi e gratinatura dorata.</p>
-              <div class="row"><span class="tag">Forno</span><span class="price">€ [14]</span></div>
+              <p class="name">Lasagna</p>
+              <p class="desc">Ragù, provola e grana padano DOP (dal menù).</p>
+              <div class="row"><span class="tag">Forno</span><span class="price">€ 11</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tonnarellialsugodipolpette.jpeg" alt="Tonnarelli al sugo di polpette">
+            <img src="./img/piatti/tonnarelloalsugo.jpeg" alt="Tonnarello al sugo">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tonnarelli al sugo di polpette</span></p>
-              <p class="desc">Tonnarelli con sugo ricco e polpette.</p>
-              <div class="row"><span class="tag">Primo</span><span class="price">€ [16,5]</span></div>
+              <p class="name">Tonnarello al sugo</p>
+              <p class="desc">Sugo classico.</p>
+              <div class="row"><span class="tag">Pasta</span><span class="price">€ [prezzo]</span></div>
             </div>
           </div>
 
@@ -312,33 +355,37 @@
         <div class="grid">
 
           <div class="card">
-            <img src="img/piatti/polpettebaccala.jpeg" alt="Polpette Baccalà">
+            <img src="./img/piatti/polpettebaccala.jpeg" alt="Polpette baccalà">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Polpette Baccalà</span></p>
-              <p class="desc">Croccanti fuori, morbide dentro.</p>
-              <div class="row"><span class="tag">Polpette</span><span class="price">€ [16]</span></div>
+              <p class="name">Polpette baccalà</p>
+              <p class="desc">Con salsa marinara (dal menù).</p>
+              <div class="row"><span class="tag">Polpette</span><span class="price">€ 16</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/polpettecacioepepe.jpeg" alt="Polpette Cacio e Pepe">
+            <img src="./img/piatti/polpettecacioepepe.jpeg" alt="Polpette cacio e pepe">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Polpette Cacio e Pepe</span></p>
-              <p class="desc">Il gusto classico romano in versione polpetta.</p>
-              <div class="row"><span class="tag">Polpette</span><span class="price">€ [16,5]</span></div>
+              <p class="name">Polpette cacio e pepe</p>
+              <p class="desc">Versione “cacio e pepe” (dal menù).</p>
+              <div class="row"><span class="tag">Polpette</span><span class="price">€ 16,5</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/polpettesugo.jpeg" alt="Polpette al Sugo">
+            <img src="./img/piatti/polpette-sugo.jpeg" alt="Polpette al sugo">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Polpette al Sugo</span></p>
-              <p class="desc">Sugo di pomodoro e polpette morbide.</p>
-              <div class="row"><span class="tag">Polpette</span><span class="price">€ [16,5]</span></div>
+              <p class="name">Polpette al sugo</p>
+              <p class="desc">Al sugo di mamma (dal menù).</p>
+              <div class="row"><span class="tag">Polpette</span><span class="price">€ 16,5</span></div>
             </div>
           </div>
 
         </div>
+
+        <p class="muted" style="margin-top:14px;">
+          Nel PDF risultano anche: Polpette alla Vaccinara (€ 18,5).
+        </p>
       </section>
 
       <!-- SECONDI -->
@@ -347,24 +394,48 @@
         <div class="grid">
 
           <div class="card">
-            <img src="img/piatti/saltimbocca.jpeg" alt="Saltimbocca alla Romana">
+            <img src="./img/piatti/saltimbocca.jpeg" alt="Saltimbocca alla Romana">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Saltimbocca alla Romana</span></p>
-              <p class="desc">Vitello, prosciutto e salvia: un classico intramontabile.</p>
-              <div class="row"><span class="tag">Secondo</span><span class="price">€ [18]</span></div>
+              <p class="name">Saltimbocca alla Romana</p>
+              <p class="desc">Con purè di patate (dal menù).</p>
+              <div class="row"><span class="tag">Secondo</span><span class="price">€ 18</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/cotoletta.jpeg" alt="Cotoletta">
+            <img src="./img/piatti/cotoletta.jpeg" alt="Cotoletta">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Cotoletta</span></p>
-              <p class="desc">Panatura dorata e croccante.</p>
-              <div class="row"><span class="tag">Secondo</span><span class="price">€ [18,5]</span></div>
+              <p class="name">Cotoletta</p>
+              <p class="desc">Gigante panata con patate fritte (dal menù).</p>
+              <div class="row"><span class="tag">Secondo</span><span class="price">€ 18,5</span></div>
             </div>
           </div>
 
         </div>
+      </section>
+
+      <!-- CONTORNI -->
+      <section id="contorni" class="section">
+        <h2 class="section-title">Contorni</h2>
+        <ul class="list">
+          <li>Insalata con pomodori — <strong>€ 6</strong></li>
+          <li>Patate al forno — <strong>€ 6</strong></li>
+          <li>Patate fritte — <strong>€ 6,5</strong></li>
+          <li>Purè di patate — <strong>€ 6</strong></li>
+          <li>Cicoria (aglio, peperoncino) — <strong>€ [prezzo]</strong></li>
+        </ul>
+      </section>
+
+      <!-- PINSE -->
+      <section id="pinse" class="section">
+        <h2 class="section-title">Pinse</h2>
+        <p class="muted">Se vuoi, le inseriamo dal PDF alla prossima revisione (mi servono le foto/nome file delle pinse).</p>
+      </section>
+
+      <!-- INSALATONE -->
+      <section id="insalatone" class="section">
+        <h2 class="section-title">Insalatone</h2>
+        <p class="muted">Se vuoi, le inseriamo dal PDF alla prossima revisione (mi servono le foto/nome file delle insalatone).</p>
       </section>
 
       <!-- DOLCI -->
@@ -373,48 +444,72 @@
         <div class="grid">
 
           <div class="card">
-            <img src="img/piatti/cheesecakenutella.png" alt="Cheesecake">
+            <img src="./img/piatti/cheesecakenutella.png" alt="Cheesecake Nutella">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Cheesecake</span></p>
-              <p class="desc">Cremosa e golosa, con topping alla Nutella.</p>
-              <div class="row"><span class="tag">Dolce</span><span class="price">€ [7]</span></div>
+              <p class="name">Cheesecake Nutella</p>
+              <p class="desc">Dal menù: cheesecake Nutella.</p>
+              <div class="row"><span class="tag">Dolce</span><span class="price">€ 7</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/salamecocciolato.jpeg" alt="Salame di cioccolato">
+            <img src="./img/piatti/salamecoccolato.jpeg" alt="Salame di Cioccolato">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Salame di cioccolato</span></p>
-              <p class="desc">Fatto in casa, con panna.</p>
-              <div class="row"><span class="tag">Dolce</span><span class="price">€ [7]</span></div>
+              <p class="name">Salame di cioccolato</p>
+              <p class="desc">Fatto in casa con panna (dal menù).</p>
+              <div class="row"><span class="tag">Dolce</span><span class="price">€ 7</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tortinocioccolato.jpeg" alt="Tortino al cioccolato con cuore caldo">
+            <img src="./img/piatti/tortinocioccolato.jpeg" alt="Tortino al cioccolato">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tortino al cioccolato con cuore caldo</span></p>
-              <p class="desc">Cuore caldo e fondente, irresistibile.</p>
-              <div class="row"><span class="tag">Dolce</span><span class="price">€ [7]</span></div>
+              <p class="name">Tortino al cioccolato</p>
+              <p class="desc">Con cuore caldo (dal menù).</p>
+              <div class="row"><span class="tag">Dolce</span><span class="price">€ 7</span></div>
             </div>
           </div>
 
           <div class="card">
-            <img src="img/piatti/tiramisu.jpeg" alt="Tiramisù">
+            <img src="./img/piatti/tiramisu.jpeg" alt="Tiramisù">
             <div class="content">
-              <p class="name"><span class="notranslate" translate="no">Tiramisù</span></p>
-              <p class="desc">Crema al mascarpone e caffè, classico italiano.</p>
-              <div class="row"><span class="tag">Dolce</span><span class="price">€ [7,5]</span></div>
+              <p class="name">Tiramisù “Tonnarello”</p>
+              <p class="desc">Tiramisù espresso (dal menù).</p>
+              <div class="row"><span class="tag">Dolce</span><span class="price">€ 7,5</span></div>
             </div>
           </div>
 
         </div>
       </section>
 
+      <!-- BEVERAGE -->
+      <section id="beverage" class="section">
+        <h2 class="section-title">Beverage</h2>
+
+        <h3 style="margin:12px 0 6px;">Amari</h3>
+        <p class="muted" style="margin-top:0;">Prezzo dal PDF: <strong>€ 4,5</strong></p>
+        <p style="margin-top:0;">
+          Limoncello, Amaro del Capo, Baileys, Montenegro, Jägermeister, Disaronno, Sambuca, Averna,
+          Unicum, Fernet Branca, Mirto, Genziana, Nerone, Anima Nera
+        </p>
+
+        <h3 style="margin:14px 0 6px;">Vini / Birre / Caffè</h3>
+        <p class="muted" style="margin-top:0;">
+          Ho estratto dal PDF anche i vini e le bevande, ma sono molte voci: se mi dici se vuoi mostrarle
+          tutte (lungo elenco) o solo una selezione, te le impagino bene qui.
+        </p>
+      </section>
+
     </div>
   </div>
 
-  <footer>© <span class="notranslate" translate="no">Tonnarello</span> • Allergeni: chiedi al personale</footer>
+  <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
 
+  <script>
+    // Se alcune immagini non si vedono:
+    // 1) controlla che il nome file in /img/piatti/ sia IDENTICO (maiuscole/minuscole incluse)
+    // 2) prova ad aprire direttamente l'immagine nel browser:
+    //    https://TUO-SITO.github.io/menu-ristorante/img/piatti/NOMEFILE.jpeg
+  </script>
 </body>
 </html>
