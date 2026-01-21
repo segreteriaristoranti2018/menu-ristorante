@@ -215,75 +215,78 @@
       border-radius: 999px;
     }
 /* ===== ALLERGENI (FUORI DAL PANEL) ===== */
-.allergens-wrap{
-  max-width:1100px;
-  margin: 0 auto;
-  padding: 0 16px 44px;
-}
-
-/* box con bordo a pallini */
+/* box con bordo a pallini (più simile alla foto) */
 .allergens-box{
   color:#111;
-  background: rgba(255,255,255,0.35);     /* trasparente ma leggibile */
+  background: rgba(255,255,255,0.22);   /* più trasparente */
   border-radius: 22px;
   padding: 18px 18px 16px;
   box-shadow: 0 14px 40px rgba(0,0,0,.22);
   backdrop-filter: blur(8px);
 
-  /* bordo a pallini */
-  border: 3px dotted rgba(180,50,70,0.85);
+  /* bordo a pallini più "da stampa" */
+  border: 4px dotted rgba(190,70,90,0.85);
+  outline: 2px solid rgba(255,255,255,0.20); /* leggero contorno esterno, aumenta leggibilità */
+  outline-offset: 6px;
 }
 
 /* titolo e testo leggermente più piccoli */
 .allergens-box h3{
   margin: 0 0 10px;
-  font-size: 22px;
+  font-size: 20px;     /* era 22 */
   font-weight: 900;
 }
 
 .allergens-box p{
   margin: 0 0 14px;
-  font-size: 14px;
+  font-size: 13px;     /* era 14 */
   line-height: 1.35;
   opacity: .95;
 }
 
-/* griglia ordinata */
+/* griglia più ordinata e compatta */
 .allergen-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 colonne come l'immagine */
   gap: 10px 14px;
   margin-top: 8px;
 }
 
-/* riga singolo allergene: numero + nome affiancati */
+@media (max-width: 980px){
+  .allergen-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px){
+  .allergen-grid{ grid-template-columns: 1fr; }
+}
+
+/* riga singolo allergene */
 .allergen-item{
   display:flex;
   align-items:center;
   gap: 10px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.25);
-  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(0,0,0,0.10);
 }
 
 /* pallino numero */
 .allergen-num{
-  width: 30px;
-  height: 30px;
+  width: 28px;      /* leggermente più piccolo */
+  height: 28px;
   border-radius: 999px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight: 900;
-  font-size: 14px;
+  font-size: 13px;  /* era 14 */
   background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.14);
   flex: 0 0 auto;
 }
 
 .allergen-name{
-  font-size: 15px;
+  font-size: 14px;  /* era 15 */
   font-weight: 800;
   line-height: 1.2;
 }
@@ -965,43 +968,41 @@
 <!-- ALLERGENI -->
 <section class="allergens-wrap" id="allergeni">
   <div class="allergens-box">
-    ...
+
+    <h3>Legenda Allergeni</h3>
+
+    <p>
+      Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
+      possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che
+      provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù.
+      Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per
+      soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di
+      allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri posti.
+    </p>
+
     <div class="allergen-grid">
-      ...
+      <div class="allergen-item"><div class="allergen-num">1</div><div class="allergen-name">Glutine e derivati</div></div>
+      <div class="allergen-item"><div class="allergen-num">2</div><div class="allergen-name">Crostacei</div></div>
+      <div class="allergen-item"><div class="allergen-num">3</div><div class="allergen-name">Uova e derivati</div></div>
+      <div class="allergen-item"><div class="allergen-num">4</div><div class="allergen-name">Pesce</div></div>
+
+      <div class="allergen-item"><div class="allergen-num">5</div><div class="allergen-name">Arachidi</div></div>
+      <div class="allergen-item"><div class="allergen-num">6</div><div class="allergen-name">Soia</div></div>
+      <div class="allergen-item"><div class="allergen-num">7</div><div class="allergen-name">Latte e derivati (lattosio)</div></div>
+      <div class="allergen-item"><div class="allergen-num">8</div><div class="allergen-name">Frutta a guscio</div></div>
+
+      <div class="allergen-item"><div class="allergen-num">9</div><div class="allergen-name">Sedano</div></div>
+      <div class="allergen-item"><div class="allergen-num">10</div><div class="allergen-name">Senape</div></div>
+      <div class="allergen-item"><div class="allergen-num">11</div><div class="allergen-name">Semi di sesamo</div></div>
+      <div class="allergen-item"><div class="allergen-num">12</div><div class="allergen-name">Anidride solforosa e solfiti &gt; 10 mg</div></div>
+
+      <div class="allergen-item"><div class="allergen-num">13</div><div class="allergen-name">Lupini</div></div>
+      <div class="allergen-item"><div class="allergen-num">14</div><div class="allergen-name">Molluschi</div></div>
     </div>
+
   </div>
 </section>
 
-  <p>
-    Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
-possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che
-provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù.
-Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per
-soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di
-allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri posti.
-  </p>
-
- <div class="allergen-grid">
-  <div class="allergen-item"><div class="allergen-num">1</div><div class="allergen-name">Glutine e derivati</div></div>
-  <div class="allergen-item"><div class="allergen-num">2</div><div class="allergen-name">Crostacei</div></div>
-  <div class="allergen-item"><div class="allergen-num">3</div><div class="allergen-name">Uova e derivati</div></div>
-  <div class="allergen-item"><div class="allergen-num">4</div><div class="allergen-name">Pesce</div></div>
-
-  <div class="allergen-item"><div class="allergen-num">5</div><div class="allergen-name">Arachidi</div></div>
-  <div class="allergen-item"><div class="allergen-num">6</div><div class="allergen-name">Soia</div></div>
-  <div class="allergen-item"><div class="allergen-num">7</div><div class="allergen-name">Latte e derivati (lattosio)</div></div>
-  <div class="allergen-item"><div class="allergen-num">8</div><div class="allergen-name">Frutta a guscio</div></div>
-
-  <div class="allergen-item"><div class="allergen-num">9</div><div class="allergen-name">Sedano</div></div>
-  <div class="allergen-item"><div class="allergen-num">10</div><div class="allergen-name">Senape</div></div>
-  <div class="allergen-item"><div class="allergen-num">11</div><div class="allergen-name">Semi di sesamo</div></div>
-  <div class="allergen-item"><div class="allergen-num">12</div><div class="allergen-name">Anidride solforosa e solfiti &gt; 10 mg</div></div>
-
-  <div class="allergen-item"><div class="allergen-num">13</div><div class="allergen-name">Lupini</div></div>
-  <div class="allergen-item"><div class="allergen-num">14</div><div class="allergen-name">Molluschi</div></div>
-</div>
-
-</section>
   <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
 
   <!-- LIGHTBOX OVERLAY -->
