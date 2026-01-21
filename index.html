@@ -171,25 +171,49 @@
     }
 
     /* icone vicino al nome */
-    .dish-icons{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
-      flex: 0 0 auto;
-    }
-    .dish-icon{
-      width: 18px;
-      height: 18px;
-      display:block;
-    }
-    .dish-icon-img{
-      widht: 18px;
-      height:18px;
-      display:block;
-      object-fit: contain;
-      }
-    .dish-icon.leaf{ color:#2e7d32; }
-    .dish-icon.dark{ color:#111; }
+.dish-icons{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+/* contenitore “pill”/badge per ogni icona */
+.dish-icon-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+
+/* SVG (foglia) */
+.dish-icon{
+  width: 18px;
+  height: 18px;
+  display:block;
+  pointer-events:none;
+}
+.dish-icon.leaf{ color:#2e7d32; }
+
+/* PNG (icone tue) */
+.dish-icon-img{
+  width: 20px;
+  height: 20px;
+  display:block;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  user-select:none;
+  pointer-events:none; /* <-- NON cliccabile */
+}
+
 
     .desc{ margin: 0 0 10px; opacity: .82; font-size: 14px; line-height: 1.35; }
     .row{ display:flex; justify-content: space-between; align-items:center; gap: 10px; }
@@ -1047,62 +1071,18 @@
         </svg>
       `);
 
-// ===== ICONS (leaf = SVG, altri = immagini vere in /icons) =====
-
-// foglia SVG (va bene così)
-const LEAF_SVG = `
-  <svg class="dish-icon leaf" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M20 4C14 4 6 7 6 16c0 3.5 2.5 4 5 4 8.5 0 10-8.5 10-16Z" fill="currentColor"/>
-    <path d="M7 19c3-5 7-8 12-10" stroke="rgba(0,0,0,.35)" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>
-`;
-
-// mappa nome -> file immagine (cartella /icons)
-const ICON_IMG = {
-  squid: "./icons/calamaro.png",
-  artichoke: "./icons/carciofo.png",
-  pig: "./icons/maiale.png",
-  cow: "./icons/manzo.png",
-  fish: "./icons/pesce.png",
-  chicken: "./icons/pollo.png",
-  turkey: "./icons/tacchino.png"
-};
-
-function renderIcons(iconList){
-  if(!iconList || !iconList.length) return "";
-
-  const html = iconList.map(k => {
-    if (k === "leaf") return LEAF_SVG;
-
-    const src = ICON_IMG[k];
-    if (!src) return "";
-
-    return `<img class="dish-icon-img" src="${src}" alt="" aria-hidden="true">`;
-  }).join("");
-
-  if(!html) return "";
-  return `<span class="dish-icons">${html}</span>`;
+.dish-icon-badge{
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
 }
 
-function applyDishIcons(){
-  document.querySelectorAll(".card[data-icons]").forEach(card => {
-    const nameEl = card.querySelector(".name");
-    if(!nameEl) return;
-
-    if(nameEl.dataset.iconsApplied) return;
-    nameEl.dataset.iconsApplied = "1";
-
-    const icons = (card.getAttribute("data-icons") || "")
-      .split(",")
-      .map(s => s.trim())
-      .filter(Boolean);
-
-    const firstSpan = nameEl.querySelector("span");
-    if(!firstSpan) return;
-
-    nameEl.insertAdjacentHTML("beforeend", renderIcons(icons));
-  });
-}
 
 
     // ===== Traduzioni UI + Allergeni =====
