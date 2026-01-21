@@ -124,7 +124,7 @@
     .wrap{
       max-width:1100px;
       margin:0 auto;
-      padding: 18px 16px 70px;
+      padding: 18px 16px 40px;
     }
     .panel{
       background: var(--panel);
@@ -161,13 +161,11 @@
     .price{ font-weight: 900; }
     .tag{ font-size: 12px; padding: 4px 8px; border-radius: 999px; background:#f2f2f2; }
 
-    .hint{ margin:0; opacity:.75; font-size:14px; }
-
     footer{
       color:#fff;
       opacity:.88;
       text-align:center;
-      padding: 26px 16px 40px;
+      padding: 22px 16px 40px;
     }
 
     /* ===== LIGHTBOX ===== */
@@ -214,85 +212,82 @@
       padding: 8px 12px;
       border-radius: 999px;
     }
-/* ===== ALLERGENI (FUORI DAL PANEL) ===== */
-/* box con bordo a pallini (più simile alla foto) */
-.allergens-box{
-  color:#111;
-  background: rgba(255,255,255,0.22);   /* più trasparente */
-  border-radius: 22px;
-  padding: 18px 18px 16px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.22);
-  backdrop-filter: blur(8px);
 
-  /* bordo a pallini più "da stampa" */
-  border: 4px dotted rgba(190,70,90,0.85);
-  outline: 2px solid rgba(255,255,255,0.20); /* leggero contorno esterno, aumenta leggibilità */
-  outline-offset: 6px;
-}
+    /* ===== ALLERGENI (FUORI DAL PANEL) ===== */
+    .allergens-wrap{
+      max-width:1100px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
 
-/* titolo e testo leggermente più piccoli */
-.allergens-box h3{
-  margin: 0 0 10px;
-  font-size: 20px;     /* era 22 */
-  font-weight: 900;
-}
+    .allergens-box{
+      color:#111;
+      background: rgba(255,255,255,0.22);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.22);
+      backdrop-filter: blur(8px);
 
-.allergens-box p{
-  margin: 0 0 14px;
-  font-size: 13px;     /* era 14 */
-  line-height: 1.35;
-  opacity: .95;
-}
+      border: 4px dotted rgba(190,70,90,0.85);
+      outline: 2px solid rgba(255,255,255,0.20);
+      outline-offset: 6px;
+    }
 
-/* griglia più ordinata e compatta */
-.allergen-grid{
-  display:grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 colonne come l'immagine */
-  gap: 10px 14px;
-  margin-top: 8px;
-}
+    .allergens-box h3{
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 900;
+    }
 
-@media (max-width: 980px){
-  .allergen-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 520px){
-  .allergen-grid{ grid-template-columns: 1fr; }
-}
+    .allergens-box p{
+      margin: 0 0 14px;
+      font-size: 13px;
+      line-height: 1.35;
+      opacity: .95;
+    }
 
-/* riga singolo allergene */
-.allergen-item{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(0,0,0,0.10);
-}
+    .allergen-grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px 14px;
+      margin-top: 8px;
+    }
+    @media (max-width: 980px){
+      .allergen-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px){
+      .allergen-grid{ grid-template-columns: 1fr; }
+    }
 
-/* pallino numero */
-.allergen-num{
-  width: 24px;      /* leggermente più piccolo */
-  height: 24px;
-  border-radius: 999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight: 900;
-  font-size: 11px;  /* era 14 */
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.14);
-  flex: 0 0 auto;
-}
+    .allergen-item{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(0,0,0,0.10);
+    }
 
-.allergen-name{
-  font-size: 11px;  /* era 15 */
-  font-weight: 800;
-  line-height: 1.2;
-}
+    .allergen-num{
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 11px;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(0,0,0,0.14);
+      flex: 0 0 auto;
+    }
 
-
-
+    .allergen-name{
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
   </style>
 </head>
 
@@ -300,7 +295,6 @@
   <!-- HOME -->
   <section class="hero" id="home">
     <div class="hero-card">
-
       <div class="topbar">
         <select id="langSelect" class="lang-select" aria-label="Seleziona lingua">
           <option value="it">🇮🇹 IT</option>
@@ -313,7 +307,7 @@
       <!-- NON tradurre: nome ristorante -->
       <h1 class="hero-title">Tonnarello</h1>
 
-      <p class="hero-sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
+      <p class="hero-sub" data-ui="hero_sub">Menu digitale • Tocca una categoria per vedere i piatti</p>
 
       <div class="btn-grid">
         <a class="btn" href="#antipasti" data-ui="btn_antipasti">Antipasti</a>
@@ -326,7 +320,7 @@
         <a class="btn" href="#dolci" data-ui="btn_dolci">Dolci</a>
       </div>
 
-      <p class="scroll-hint">⬇️ Scorri oppure clicca una categoria</p>
+      <p class="scroll-hint" data-ui="scroll_hint">⬇️ Scorri oppure clicca una categoria</p>
     </div>
   </section>
 
@@ -420,9 +414,8 @@
             </div>
           </div>
 
-          <!-- Mancante nel tuo vecchio codice -->
           <div class="card">
-        <img src="./img/piatti/taglieregenuinosalumieformaggi.jpeg" alt="Tagliere genuino di Salumi e Formaggi">
+            <img src="./img/piatti/taglieregenuinosalumieformaggi.jpeg" alt="Tagliere genuino di Salumi e Formaggi">
             <div class="content">
               <p class="name">Tagliere genuino di Salumi e Formaggi</p>
               <p class="desc" data-desc-key="tagliere_desc">Selezione di salumi e formaggi.</p>
@@ -545,7 +538,6 @@
             </div>
           </div>
 
-          <!-- Mancanti nel tuo vecchio codice -->
           <div class="card">
             <img src="./img/piatti/polpettevaccinara.jpeg" alt="Polpette alla Vaccinara">
             <div class="content">
@@ -639,58 +631,57 @@
       </section>
 
       <!-- CONTORNI -->
-<section id="contorni" class="section">
-  <h2 class="section-title" data-ui="sec_contorni">Contorni</h2>
-  <div class="grid">
+      <section id="contorni" class="section">
+        <h2 class="section-title" data-ui="sec_contorni">Contorni</h2>
+        <div class="grid">
 
-    <div class="card">
-      <img src="./img/piatti/cicoriaripassata.jpeg" alt="Cicoria ripassata">
-      <div class="content">
-        <p class="name">Cicoria ripassata</p>
-        <p class="desc" data-desc-key="cicoria_desc">Aglio e peperoncino.</p>
-        <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
-      </div>
-    </div>
+          <div class="card">
+            <img src="./img/piatti/cicoriaripassata.jpeg" alt="Cicoria ripassata">
+            <div class="content">
+              <p class="name">Cicoria ripassata</p>
+              <p class="desc" data-desc-key="cicoria_desc">Aglio e peperoncino.</p>
+              <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
+            </div>
+          </div>
 
-    <div class="card">
-      <img src="./img/piatti/insalatapomodori.jpeg" alt="Insalata con Pomodori">
-      <div class="content">
-        <p class="name">Insalata con Pomodori</p>
-        <p class="desc" data-desc-key="insalata_pomodori_desc">Fresca e leggera.</p>
-        <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
-      </div>
-    </div>
+          <div class="card">
+            <img src="./img/piatti/insalatapomodori.jpeg" alt="Insalata con Pomodori">
+            <div class="content">
+              <p class="name">Insalata con Pomodori</p>
+              <p class="desc" data-desc-key="insalata_pomodori_desc">Fresca e leggera.</p>
+              <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
+            </div>
+          </div>
 
-    <div class="card">
-      <img src="./img/piatti/patatealforno.jpeg" alt="Patate al forno">
-      <div class="content">
-        <p class="name">Patate al forno</p>
-        <p class="desc" data-desc-key="patate_forno_desc">Patate al forno.</p>
-        <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
-      </div>
-    </div>
+          <div class="card">
+            <img src="./img/piatti/patatealforno.jpeg" alt="Patate al forno">
+            <div class="content">
+              <p class="name">Patate al forno</p>
+              <p class="desc" data-desc-key="patate_forno_desc">Patate al forno.</p>
+              <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
+            </div>
+          </div>
 
-    <div class="card">
-      <img src="./img/piatti/patatefritte.jpeg" alt="Patate fritte">
-      <div class="content">
-        <p class="name">Patate fritte</p>
-        <p class="desc" data-desc-key="patate_fritte_desc">Croccanti.</p>
-        <div class="row"><span class="tag">Contorno</span><span class="price">€ 6,5</span></div>
-      </div>
-    </div>
+          <div class="card">
+            <img src="./img/piatti/patatefritte.jpeg" alt="Patate fritte">
+            <div class="content">
+              <p class="name">Patate fritte</p>
+              <p class="desc" data-desc-key="patate_fritte_desc">Croccanti.</p>
+              <div class="row"><span class="tag">Contorno</span><span class="price">€ 6,5</span></div>
+            </div>
+          </div>
 
-    <div class="card">
-      <img src="./img/piatti/pure.jpeg" alt="Purè di patate">
-      <div class="content">
-        <p class="name">Purè di patate</p>
-        <p class="desc" data-desc-key="pure_desc">Cremoso.</p>
-        <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
-      </div>
-    </div>
+          <div class="card">
+            <img src="./img/piatti/pure.jpeg" alt="Purè di patate">
+            <div class="content">
+              <p class="name">Purè di patate</p>
+              <p class="desc" data-desc-key="pure_desc">Cremoso.</p>
+              <div class="row"><span class="tag">Contorno</span><span class="price">€ 6</span></div>
+            </div>
+          </div>
 
-  </div>
-</section>
-
+        </div>
+      </section>
 
       <!-- PINSE -->
       <section id="pinse" class="section">
@@ -778,9 +769,8 @@
             </div>
           </div>
 
-          <!-- nel PDF, ma potresti non avere foto: fallback automatico -->
           <div class="card">
-          <img src="./img/piatti/patateesalsiccie.jpeg" alt="Pinsa Salsiccia e Patate">
+            <img src="./img/piatti/patateesalsiccie.jpeg" alt="Pinsa Salsiccia e Patate">
             <div class="content">
               <p class="name">Pinsa Salsiccia e Patate</p>
               <p class="desc" data-desc-key="pinsa_salsicciaepatate_desc">Mozzarella, salsiccia, patate al forno e rosmarino.</p>
@@ -797,7 +787,6 @@
             </div>
           </div>
 
-          <!-- nel PDF, ma potresti non avere foto: fallback automatico -->
           <div class="card">
             <img src="./img/piatti/rustica.jpeg" alt="Pinsa Rustica">
             <div class="content">
@@ -807,7 +796,6 @@
             </div>
           </div>
 
-          <!-- nel PDF, ma potresti non avere foto: fallback automatico -->
           <div class="card">
             <img src="./img/piatti/bufalina.jpeg" alt="Pinsa Bufalina (base bianca)">
             <div class="content">
@@ -962,48 +950,46 @@
         </div>
       </section>
 
-
     </div>
   </div>
-<!-- ALLERGENI -->
-<section class="allergens-wrap" id="allergeni">
-  <div class="allergens-box">
 
-    <h3>Allergeni</h3>
+  <!-- ALLERGENI (FUORI DAL PANEL) -->
+  <section class="allergens-wrap" id="allergeni">
+    <div class="allergens-box">
+      <h3 data-ui="all_title">Allergeni</h3>
 
-    <p>
-      Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
-      possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che
-      provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù.
-      Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per
-      soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di
-      allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri posti.
-    </p>
+      <p data-ui="all_text">
+        Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
+        possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che
+        provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù.
+        Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per
+        soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di
+        allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri piatti.
+      </p>
 
-    <div class="allergen-grid">
-      <div class="allergen-item"><div class="allergen-num">1</div><div class="allergen-name">Glutine e derivati</div></div>
-      <div class="allergen-item"><div class="allergen-num">2</div><div class="allergen-name">Crostacei</div></div>
-      <div class="allergen-item"><div class="allergen-num">3</div><div class="allergen-name">Uova e derivati</div></div>
-      <div class="allergen-item"><div class="allergen-num">4</div><div class="allergen-name">Pesce</div></div>
+      <div class="allergen-grid">
+        <div class="allergen-item"><div class="allergen-num">1</div><div class="allergen-name" data-all-key="a1">Glutine e derivati</div></div>
+        <div class="allergen-item"><div class="allergen-num">2</div><div class="allergen-name" data-all-key="a2">Crostacei</div></div>
+        <div class="allergen-item"><div class="allergen-num">3</div><div class="allergen-name" data-all-key="a3">Uova e derivati</div></div>
+        <div class="allergen-item"><div class="allergen-num">4</div><div class="allergen-name" data-all-key="a4">Pesce</div></div>
 
-      <div class="allergen-item"><div class="allergen-num">5</div><div class="allergen-name">Arachidi</div></div>
-      <div class="allergen-item"><div class="allergen-num">6</div><div class="allergen-name">Soia</div></div>
-      <div class="allergen-item"><div class="allergen-num">7</div><div class="allergen-name">Latte e derivati (lattosio)</div></div>
-      <div class="allergen-item"><div class="allergen-num">8</div><div class="allergen-name">Frutta a guscio</div></div>
+        <div class="allergen-item"><div class="allergen-num">5</div><div class="allergen-name" data-all-key="a5">Arachidi</div></div>
+        <div class="allergen-item"><div class="allergen-num">6</div><div class="allergen-name" data-all-key="a6">Soia</div></div>
+        <div class="allergen-item"><div class="allergen-num">7</div><div class="allergen-name" data-all-key="a7">Latte e derivati (lattosio)</div></div>
+        <div class="allergen-item"><div class="allergen-num">8</div><div class="allergen-name" data-all-key="a8">Frutta a guscio</div></div>
 
-      <div class="allergen-item"><div class="allergen-num">9</div><div class="allergen-name">Sedano</div></div>
-      <div class="allergen-item"><div class="allergen-num">10</div><div class="allergen-name">Senape</div></div>
-      <div class="allergen-item"><div class="allergen-num">11</div><div class="allergen-name">Semi di sesamo</div></div>
-      <div class="allergen-item"><div class="allergen-num">12</div><div class="allergen-name">Anidride solforosa e solfiti &gt; 10 mg</div></div>
+        <div class="allergen-item"><div class="allergen-num">9</div><div class="allergen-name" data-all-key="a9">Sedano</div></div>
+        <div class="allergen-item"><div class="allergen-num">10</div><div class="allergen-name" data-all-key="a10">Senape</div></div>
+        <div class="allergen-item"><div class="allergen-num">11</div><div class="allergen-name" data-all-key="a11">Semi di sesamo</div></div>
+        <div class="allergen-item"><div class="allergen-num">12</div><div class="allergen-name" data-all-key="a12">Anidride solforosa e solfiti &gt; 10 mg</div></div>
 
-      <div class="allergen-item"><div class="allergen-num">13</div><div class="allergen-name">Lupini</div></div>
-      <div class="allergen-item"><div class="allergen-num">14</div><div class="allergen-name">Molluschi</div></div>
+        <div class="allergen-item"><div class="allergen-num">13</div><div class="allergen-name" data-all-key="a13">Lupini</div></div>
+        <div class="allergen-item"><div class="allergen-num">14</div><div class="allergen-name" data-all-key="a14">Molluschi</div></div>
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
-
-  <footer>© Tonnarello • Allergeni: chiedi al personale</footer>
+  <footer data-ui="footer_note">© Tonnarello • Allergeni: chiedi al personale</footer>
 
   <!-- LIGHTBOX OVERLAY -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
@@ -1032,9 +1018,11 @@
         </svg>
       `);
 
-    // ===== Traduzioni: bottoni + titoli sezione + descrizioni (NON nomi piatti / NON Tonnarello) =====
+    // ===== Traduzioni UI =====
     const UI = {
       it: {
+        hero_sub: "Menu digitale • Tocca una categoria per vedere i piatti",
+        scroll_hint: "⬇️ Scorri oppure clicca una categoria",
         btn_antipasti: "Antipasti",
         btn_primi: "Primi",
         btn_polpette: "Polpette per tutti",
@@ -1051,9 +1039,15 @@
         sec_pinse: "Pinse",
         sec_insalatone: "Insalatone",
         sec_dolci: "Dolci",
+        all_title: "Allergeni",
+        all_text:
+          "Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio, possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù. Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri piatti.",
+        footer_note: "© Tonnarello • Allergeni: chiedi al personale",
         lb_hint: "Clicca fuori o premi ESC per chiudere"
       },
       en: {
+        hero_sub: "Digital menu • Tap a category to see the dishes",
+        scroll_hint: "⬇️ Scroll or tap a category",
         btn_antipasti: "Starters",
         btn_primi: "First courses",
         btn_polpette: "Meatballs for everyone",
@@ -1070,9 +1064,15 @@
         sec_pinse: "Pinsa",
         sec_insalatone: "Salads",
         sec_dolci: "Desserts",
+        all_title: "Allergens",
+        all_text:
+          "Pursuant to EU Regulation No. 1169/2011, please be informed that foods and beverages prepared in this establishment may contain ingredients or processing aids considered allergens. Information on substances or products that may cause allergies or intolerances is available by asking our staff and on the menu. Food is our great passion: our dishes are made with high-quality ingredients and we do our best to meet the needs of guests with food allergies. However, we cannot guarantee a completely allergen-free environment and traces of some ingredients may be present in our dishes.",
+        footer_note: "© Tonnarello • Allergens: ask our staff",
         lb_hint: "Click outside or press ESC to close"
       },
       es: {
+        hero_sub: "Menú digital • Toca una categoría para ver los platos",
+        scroll_hint: "⬇️ Desplázate o toca una categoría",
         btn_antipasti: "Entrantes",
         btn_primi: "Primeros",
         btn_polpette: "Albóndigas para todos",
@@ -1089,9 +1089,15 @@
         sec_pinse: "Pinsa",
         sec_insalatone: "Ensaladas",
         sec_dolci: "Postres",
+        all_title: "Alérgenos",
+        all_text:
+          "De conformidad con el Reglamento (UE) n.º 1169/2011, se informa a la clientela de que los alimentos y bebidas preparados en este establecimiento pueden contener ingredientes o coadyuvantes tecnológicos considerados alérgenos. La información sobre sustancias o productos que pueden provocar alergias o intolerancias está disponible consultando al personal y en el menú. La comida es nuestra gran pasión: nuestros platos se elaboran con ingredientes de alta calidad y hacemos todo lo posible para satisfacer las necesidades de los clientes con alergias alimentarias. Sin embargo, no podemos garantizar un entorno totalmente libre de alérgenos y podrían existir trazas de algunos ingredientes en nuestros platos.",
+        footer_note: "© Tonnarello • Alérgenos: consulta al personal",
         lb_hint: "Haz clic fuera o pulsa ESC para cerrar"
       },
       fr: {
+        hero_sub: "Menu digital • Touchez une catégorie pour voir les plats",
+        scroll_hint: "⬇️ Faites défiler ou touchez une catégorie",
         btn_antipasti: "Entrées",
         btn_primi: "Premiers",
         btn_polpette: "Boulettes pour tous",
@@ -1108,10 +1114,15 @@
         sec_pinse: "Pinsa",
         sec_insalatone: "Salades",
         sec_dolci: "Desserts",
+        all_title: "Allergènes",
+        all_text:
+          "Conformément au Règlement (UE) n° 1169/2011, nous informons notre aimable clientèle que les aliments et boissons préparés dans cet établissement peuvent contenir des ingrédients ou auxiliaires technologiques considérés comme allergènes. Les informations concernant la présence de substances ou produits provoquant des allergies ou intolérances sont disponibles auprès du personnel et sur le menu. La cuisine est notre grande passion : nos plats sont réalisés avec des ingrédients de haute qualité et nous faisons de notre mieux pour répondre aux besoins des clients souffrant d’allergies alimentaires. Toutefois, nous ne pouvons garantir un environnement totalement exempt d’allergènes et des traces de certains ingrédients peuvent être présentes dans nos plats.",
+        footer_note: "© Tonnarello • Allergènes : demandez au personnel",
         lb_hint: "Cliquez hors image ou appuyez sur ÉCHAP pour fermer"
       }
     };
 
+    // ===== Traduzioni descrizioni piatti =====
     const DESC = {
       it: {
         carciofo_desc: "Tradizione romana.",
@@ -1149,7 +1160,6 @@
         patate_forno_desc: "Patate al forno.",
         patate_fritte_desc: "Croccanti.",
         pure_desc: "Cremoso.",
-        patate_pomodoro_desc: "Patate al forno e pomodoro.",
         pinsa_margherita_desc: "Pomodoro, mozzarella e basilico.",
         pinsa_cacioepepe_desc: "Mozzarella, cacio e pepe.",
         pinsa_contadina_desc: "Pomodoro, mozzarella, zucchine, melanzane e peperoni.",
@@ -1214,7 +1224,6 @@
         patate_forno_desc: "Oven potatoes.",
         patate_fritte_desc: "Crispy fries.",
         pure_desc: "Creamy mash.",
-        patate_pomodoro_desc: "Oven potatoes and tomato.",
         pinsa_margherita_desc: "Tomato, mozzarella and basil.",
         pinsa_cacioepepe_desc: "Mozzarella, cacio and pepper.",
         pinsa_contadina_desc: "Tomato, mozzarella, zucchini, eggplant and peppers.",
@@ -1279,7 +1288,6 @@
         patate_forno_desc: "Patatas al horno.",
         patate_fritte_desc: "Crujientes.",
         pure_desc: "Cremoso.",
-        patate_pomodoro_desc: "Patatas al horno y tomate.",
         pinsa_margherita_desc: "Tomate, mozzarella y albahaca.",
         pinsa_cacioepepe_desc: "Mozzarella, cacio y pimienta.",
         pinsa_contadina_desc: "Tomate, mozzarella, calabacín, berenjena y pimientos.",
@@ -1344,7 +1352,6 @@
         patate_forno_desc: "Pommes de terre au four.",
         patate_fritte_desc: "Croustillantes.",
         pure_desc: "Onctueuse.",
-        patate_pomodoro_desc: "Pommes de terre au four et tomate.",
         pinsa_margherita_desc: "Tomate, mozzarella et basilic.",
         pinsa_cacioepepe_desc: "Mozzarella, cacio et poivre.",
         pinsa_contadina_desc: "Tomate, mozzarella, courgettes, aubergines et poivrons.",
@@ -1365,96 +1372,133 @@
         ins_testaccio_desc: "Roquette, bresaola, grana, olives, aubergines.",
         ins_borgo_desc: "Roquette, saumon fumé, feta, agrumes, noix.",
         trastevere_desc: "Mesclun, mozzarella de buffonne, tomates, olives, maïs, courgettes.",
-tiramisu_desc: "Comme sur le menu.",
-      cheesecake_bosco_desc: "Comme sur le menu.",
-      cheesecake_desc: "Comme sur le menu.",
-      pannacotta_desc: "Dessert délicat.",
-      salame_desc: "Fait maison avec crème.",
-      tortino_desc: "Avec un cœur chaud.",
-      gelato_desc: "Glace et café."
+        tiramisu_desc: "Comme sur le menu.",
+        cheesecake_bosco_desc: "Comme sur le menu.",
+        cheesecake_desc: "Comme sur le menu.",
+        pannacotta_desc: "Dessert délicat.",
+        salame_desc: "Fait maison avec crème.",
+        tortino_desc: "Avec un cœur chaud.",
+        gelato_desc: "Glace et café."
+      }
+    };
+
+    // ===== Traduzioni NOMI ALLERGENI =====
+    const ALL = {
+      it: {
+        a1:"Glutine e derivati", a2:"Crostacei", a3:"Uova e derivati", a4:"Pesce",
+        a5:"Arachidi", a6:"Soia", a7:"Latte e derivati (lattosio)", a8:"Frutta a guscio",
+        a9:"Sedano", a10:"Senape", a11:"Semi di sesamo", a12:"Anidride solforosa e solfiti > 10 mg",
+        a13:"Lupini", a14:"Molluschi"
+      },
+      en: {
+        a1:"Gluten and cereals", a2:"Crustaceans", a3:"Eggs", a4:"Fish",
+        a5:"Peanuts", a6:"Soy", a7:"Milk (lactose)", a8:"Tree nuts",
+        a9:"Celery", a10:"Mustard", a11:"Sesame seeds", a12:"Sulphur dioxide and sulphites > 10 mg",
+        a13:"Lupin", a14:"Molluscs"
+      },
+      es: {
+        a1:"Gluten y cereales", a2:"Crustáceos", a3:"Huevos", a4:"Pescado",
+        a5:"Cacahuetes", a6:"Soja", a7:"Leche (lactosa)", a8:"Frutos de cáscara",
+        a9:"Apio", a10:"Mostaza", a11:"Sésamo", a12:"Dióxido de azufre y sulfitos > 10 mg",
+        a13:"Altramuces", a14:"Moluscos"
+      },
+      fr: {
+        a1:"Gluten et céréales", a2:"Crustacés", a3:"Œufs", a4:"Poisson",
+        a5:"Arachides", a6:"Soja", a7:"Lait (lactose)", a8:"Fruits à coque",
+        a9:"Céleri", a10:"Moutarde", a11:"Sésame", a12:"Anhydride sulfureux et sulfites > 10 mg",
+        a13:"Lupin", a14:"Mollusques"
+      }
+    };
+
+    function applyLang(lang){
+      document.documentElement.lang = lang;
+
+      // UI: testi generali + allergeni titolo/testo/footer
+      const ui = UI[lang] || UI.it;
+      document.querySelectorAll("[data-ui]").forEach(el => {
+        const key = el.getAttribute("data-ui");
+        if (ui[key]) el.textContent = ui[key];
+      });
+
+      // Hint lightbox
+      const lbHint = document.getElementById("lbHint");
+      if (lbHint && ui.lb_hint) lbHint.textContent = ui.lb_hint;
+
+      // Descrizioni piatti
+      const d = DESC[lang] || DESC.it;
+      document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
+        const key = p.getAttribute("data-desc-key");
+        if (d[key]) p.textContent = d[key];
+      });
+
+      // Nomi allergeni
+      const a = ALL[lang] || ALL.it;
+      document.querySelectorAll(".allergen-name[data-all-key]").forEach(el => {
+        const key = el.getAttribute("data-all-key");
+        if (a[key]) el.textContent = a[key];
+      });
+
+      localStorage.setItem("menu_lang", lang);
     }
-  };
 
-  function applyLang(lang){
-    document.documentElement.lang = lang;
-
-    // UI: bottoni + titoli sezione
-    const ui = UI[lang] || UI.it;
-    document.querySelectorAll("[data-ui]").forEach(el => {
-      const key = el.getAttribute("data-ui");
-      if (ui[key]) el.textContent = ui[key];
+    // ===== FALLBACK immagini mancanti =====
+    document.querySelectorAll(".card img").forEach(img => {
+      img.addEventListener("error", () => {
+        if (img.dataset.fallbackApplied) return;
+        img.dataset.fallbackApplied = "1";
+        img.src = PLACEHOLDER_SRC;
+        img.style.objectFit = "contain";
+        img.style.background = "#fff";
+        img.style.cursor = "default";
+      });
     });
 
-    // Hint lightbox
-    const lbHint = document.getElementById("lbHint");
-    if (lbHint && ui.lb_hint) lbHint.textContent = ui.lb_hint;
+    // ===== LIGHTBOX (per tutte le immagini) =====
+    const lb = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
 
-    // Descrizioni
-    const d = DESC[lang] || DESC.it;
-    document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
-      const key = p.getAttribute("data-desc-key");
-      if (d[key]) p.textContent = d[key];
+    function openLightbox(src, alt){
+      // non aprire lightbox per placeholder
+      if (src && src.startsWith("data:image/svg+xml")) return;
+
+      lbImg.src = src;
+      lbImg.alt = alt || "";
+      lb.classList.add("open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox(){
+      lb.classList.remove("open");
+      lb.setAttribute("aria-hidden", "true");
+      lbImg.src = "";
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest(".card img");
+      if(!img) return;
+      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
     });
 
-    localStorage.setItem("menu_lang", lang);
-  }
-
-  // ===== FALLBACK immagini mancanti =====
-  document.querySelectorAll(".card img").forEach(img => {
-    img.addEventListener("error", () => {
-      if (img.dataset.fallbackApplied) return;
-      img.dataset.fallbackApplied = "1";
-      img.src = PLACEHOLDER_SRC;
-      img.style.objectFit = "contain";
-      img.style.background = "#fff";
-      img.style.cursor = "default";
+    lbClose.addEventListener("click", closeLightbox);
+    lb.addEventListener("click", (e) => {
+      if(e.target === lb) closeLightbox();
     });
-  });
 
-  // ===== LIGHTBOX (per tutte le immagini) =====
-  const lb = document.getElementById("lightbox");
-  const lbImg = document.getElementById("lbImg");
-  const lbClose = document.getElementById("lbClose");
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeLightbox();
+    });
 
-  function openLightbox(src, alt){
-    // non aprire lightbox per placeholder
-    if (src && src.startsWith("data:image/svg+xml")) return;
-
-    lbImg.src = src;
-    lbImg.alt = alt || "";
-    lb.classList.add("open");
-    lb.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeLightbox(){
-    lb.classList.remove("open");
-    lb.setAttribute("aria-hidden", "true");
-    lbImg.src = "";
-    document.body.style.overflow = "";
-  }
-
-  document.addEventListener("click", (e) => {
-    const img = e.target.closest(".card img");
-    if(!img) return;
-    openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
-  });
-
-  lbClose.addEventListener("click", closeLightbox);
-  lb.addEventListener("click", (e) => {
-    if(e.target === lb) closeLightbox();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape") closeLightbox();
-  });
-
-  // ===== INIT =====
-  const select = document.getElementById("langSelect");
-  const saved = localStorage.getItem("menu_lang") || "it";
-  if (select){
-    select.value = saved;
-    select.addEventListener("change", e => applyLang(e.target.value));
-  }
-  applyLang(saved);
-</script>
+    // ===== INIT =====
+    const select = document.getElementById("langSelect");
+    const saved = localStorage.getItem("menu_lang") || "it";
+    if (select){
+      select.value = saved;
+      select.addEventListener("change", e => applyLang(e.target.value));
+    }
+    applyLang(saved);
+  </script>
+</body>
+</html>
