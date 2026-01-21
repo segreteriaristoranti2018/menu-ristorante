@@ -43,7 +43,50 @@
       background: rgba(0,0,0,0.35);
       z-index:-1;
     }
+/* ===== ICONE VICINO AL NOME (non cliccabili) ===== */
+.dish-icons{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
 
+.dish-icon-badge{
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  pointer-events:none;
+  user-select:none;
+}
+
+/* foglia SVG */
+.dish-icon{
+  width: 14px;
+  height: 14px;
+  display:block;
+  pointer-events:none;
+}
+.dish-icon.leaf{ color:#2e7d32; }
+
+/* icone PNG */
+.dish-icon-img{
+  width: 14px;
+  height: 14px;
+  display:block;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  user-select:none;
+  pointer-events:none;
+}
     /* ===== HERO ===== */
     .hero{
       min-height: 100vh;
@@ -1396,35 +1439,93 @@
       });
     });
 
-    // ===== LIGHTBOX =====
-    const lb = document.getElementById("lightbox");
-    const lbImg = document.getElementById("lbImg");
-    const lbClose = document.getElementById("lbClose");
+// ===== LIGHTBOX =====
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbClose = document.getElementById("lbClose");
 
-    function openLightbox(src, alt){
-      if (src && src.startsWith("data:image/svg+xml")) return;
-      lbImg.src = src;
-      lbImg.alt = alt || "";
-      lb.classList.add("open");
-      lb.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
-    function closeLightbox(){
-      lb.classList.remove("open");
-      lb.setAttribute("aria-hidden", "true");
-      lbImg.src = "";
-      document.body.style.overflow = "";
-    }
+function openLightbox(src, alt){
+  if (src && src.startsWith("data:image/svg+xml")) return;
+  lbImg.src = src;
+  lbImg.alt = alt || "";
+  lb.classList.add("open");
+  lb.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox(){
+  lb.classList.remove("open");
+  lb.setAttribute("aria-hidden", "true");
+  lbImg.src = "";
+  document.body.style.overflow = "";
+}
 
-    document.addEventListener("click", (e) => {
-      const img = e.target.closest(".card img");
-      if(!img) return;
-      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+lbClose.addEventListener("click", closeLightbox);
+lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
+
+/* ====== ICONS CONFIG (usa la tua cartella /icons e i tuoi nomi file) ====== */
+const ICONS = {
+  leaf: { type:"svg", html: `
+    <svg class="dish-icon leaf" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M21 3s-6.5.5-11 5-5 11-5 11 6.5-.5 11-5 5-11 5-11Zm-9.4 13.4c-1.2.9-2.4 1.5-3.3 1.9.4-.9 1-2.1 1.9-3.3 1.7-2.3 4.3-4.7 8.1-6.5-1.8 3.8-4.2 6.4-6.7 7.9Z"/>
+    </svg>
+  `},
+
+  fish:      { type:"img", src:"./icons/pesce.png" },
+  pig:       { type:"img", src:"./icons/maiale.png" },
+  cow:       { type:"img", src:"./icons/manzo.png" },
+  chicken:   { type:"img", src:"./icons/pollo.png" },
+  turkey:    { type:"img", src:"./icons/tacchino.png" },
+  squid:     { type:"img", src:"./icons/calamaro.png" },
+  artichoke: { type:"img", src:"./icons/carciofo.png" }
+};
+
+function applyDishIcons(){
+  document.querySelectorAll(".card[data-icons]").forEach(card => {
+    const list = (card.dataset.icons || "")
+      .split(",").map(s => s.trim()).filter(Boolean);
+    if(!list.length) return;
+
+    const nameEl = card.querySelector(".name");
+    if(!nameEl) return;
+
+    if(nameEl.querySelector(".dish-icons")) return;
+
+    const wrap = document.createElement("span");
+    wrap.className = "dish-icons";
+
+    list.forEach(key => {
+      const icon = ICONS[key];
+      if(!icon) return;
+
+      const badge = document.createElement("span");
+      badge.className = "dish-icon-badge";
+
+      if(icon.type === "svg"){
+        badge.innerHTML = icon.html;
+      } else {
+        const img = document.createElement("img");
+        img.className = "dish-icon-img";
+        img.src = icon.src;
+        img.alt = key;
+        img.draggable = false;
+        badge.appendChild(img);
+      }
+
+      wrap.appendChild(badge);
     });
 
-    lbClose.addEventListener("click", closeLightbox);
-    lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
-    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
+    nameEl.appendChild(wrap);
+  });
+}
+
+function markDishPhotos(){
+  document.querySelectorAll(".card").forEach(card => {
+    const topImg = card.querySelector(":scope > img");
+    if(topImg) topImg.classList.add("dish-photo");
+  });
+}
+
 // ===== INIT (DOM pronto) =====
 window.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById("langSelect");
@@ -1435,8 +1536,19 @@ window.addEventListener("DOMContentLoaded", () => {
     select.addEventListener("change", e => applyLang(e.target.value));
   }
 
-  applyDishIcons();  // <-- icone
-  applyLang(saved);  // <-- traduzioni + allergeni
+  // 1) prima marchio le foto piatti
+  markDishPhotos();
+
+  // 2) poi attacco il click SOLO alle foto piatti (ora esistono e hanno la classe)
+  document.addEventListener("click", (e) => {
+    const img = e.target.closest("img.dish-photo");
+    if(!img) return;
+    openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+  });
+
+  // 3) icone e lingua
+  applyDishIcons();
+  applyLang(saved);
 });
 
 
