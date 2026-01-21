@@ -61,8 +61,6 @@
   background: rgba(0,0,0,0.06);
   border: 1px solid rgba(0,0,0,0.10);
   box-shadow: 0 2px 6px rgba(0,0,0,.08);
-  pointer-events:none;
-  user-select:none;
 }
 
 /* foglia SVG */
@@ -1098,466 +1096,186 @@
     <div class="hint" id="lbHint" data-ui="lb_hint">Clicca fuori o premi ESC per chiudere</div>
   </div>
 
-  <script>
-    // ===== Placeholder immagine (se file mancante) =====
-    const PLACEHOLDER_SRC =
-      'data:image/svg+xml;charset=utf-8,' +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#f0f0f0"/>
-              <stop offset="1" stop-color="#e2e2e2"/>
-            </linearGradient>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#g)"/>
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-                font-family="Arial" font-size="44" fill="#777">
-            Immagine non disponibile
-          </text>
-        </svg>
-      `);
+ <script>
+  // ===== Placeholder immagine (se file mancante) =====
+  const PLACEHOLDER_SRC =
+    'data:image/svg+xml;charset=utf-8,' +
+    encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0" stop-color="#f0f0f0"/>
+            <stop offset="1" stop-color="#e2e2e2"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+              font-family="Arial" font-size="44" fill="#777">
+          Immagine non disponibile
+        </text>
+      </svg>
+    `);
 
-.dish-icon-badge{
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  background: rgba(0,0,0,0.06);
-  border: 1px solid rgba(0,0,0,0.10);
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-}
+  // ===== Traduzioni UI + Allergeni =====
+  const ALLERGENS = { /* ... LASCIA COME HAI ... */ };
+  const UI = { /* ... LASCIA COME HAI ... */ };
+  const DESC = { /* ... LASCIA COME HAI ... */ };
 
+  function renderAllergens(lang){
+    const a = ALLERGENS[lang] || ALLERGENS.it;
+    const grid = document.getElementById("allergenGrid");
+    if(!grid) return;
 
-
-    // ===== Traduzioni UI + Allergeni =====
-    const ALLERGENS = {
-      it: {
-        title: "Allergeni",
-        text:
-          "Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio, " +
-          "possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che " +
-          "provocano allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù. " +
-          "Il cibo è una nostra grande passione: i nostri pasti sono realizzati con ingredienti di elevata qualità e facciamo del nostro meglio per " +
-          "soddisfare le esigenze dei clienti con allergie alimentari. Tuttavia, non possiamo garantire un ambiente completamente privo di " +
-          "allergeni e tracce di alcuni ingredienti potrebbero essere presenti nei nostri posti.",
-        items: [
-          "Glutine e derivati","Crostacei","Uova e derivati","Pesce",
-          "Arachidi","Soia","Latte e derivati (lattosio)","Frutta a guscio",
-          "Sedano","Senape","Semi di sesamo","Anidride solforosa e solfiti > 10 mg",
-          "Lupini","Molluschi"
-        ]
-      },
-      en: {
-        title: "Allergens",
-        text:
-          "Pursuant to EU Regulation No. 1169/2011, we inform our customers that foods and beverages prepared in this establishment may contain ingredients " +
-          "or processing aids considered allergens. Information about substances or products that may cause allergies or intolerances is available from our staff and on the menu. " +
-          "Food is our great passion: our dishes are made with high-quality ingredients and we do our best to meet the needs of customers with food allergies. " +
-          "However, we cannot guarantee a completely allergen-free environment, and traces of some ingredients may be present in our dishes.",
-        items: [
-          "Gluten and cereals","Crustaceans","Eggs","Fish",
-          "Peanuts","Soybeans","Milk (lactose)","Nuts",
-          "Celery","Mustard","Sesame seeds","Sulphur dioxide and sulphites > 10 mg",
-          "Lupin","Molluscs"
-        ]
-      },
-      es: {
-        title: "Alérgenos",
-        text:
-          "De conformidad con el Reglamento (UE) n.º 1169/2011, informamos a nuestra clientela de que los alimentos y bebidas preparados en este establecimiento " +
-          "pueden contener ingredientes o coadyuvantes considerados alérgenos. La información sobre sustancias o productos que puedan causar alergias o intolerancias " +
-          "está disponible a través del personal y en el menú. La comida es nuestra gran pasión: elaboramos nuestros platos con ingredientes de alta calidad y hacemos " +
-          "todo lo posible por satisfacer las necesidades de los clientes con alergias alimentarias. Sin embargo, no podemos garantizar un entorno completamente libre de alérgenos, " +
-          "y podrían existir trazas de algunos ingredientes en nuestros platos.",
-        items: [
-          "Gluten y cereales","Crustáceos","Huevos","Pescado",
-          "Cacahuetes","Soja","Leche (lactosa)","Frutos de cáscara",
-          "Apio","Mostaza","Sésamo","Dióxido de azufre y sulfitos > 10 mg",
-          "Altramuces","Moluscos"
-        ]
-      },
-      fr: {
-        title: "Allergènes",
-        text:
-          "Conformément au règlement (UE) n° 1169/2011, nous informons notre aimable clientèle que les aliments et boissons préparés dans cet établissement " +
-          "peuvent contenir des ingrédients ou auxiliaires technologiques considérés comme allergènes. Les informations relatives aux substances ou produits pouvant " +
-          "provoquer des allergies ou intolérances sont disponibles auprès du personnel et sur le menu. La cuisine est notre grande passion : nos plats sont préparés avec " +
-          "des ingrédients de haute qualité et nous faisons de notre mieux pour répondre aux besoins des clients souffrant d’allergies alimentaires. Toutefois, nous ne pouvons " +
-          "pas garantir un environnement totalement exempt d’allergènes, et des traces de certains ingrédients peuvent être présentes dans nos plats.",
-        items: [
-          "Gluten et céréales","Crustacés","Œufs","Poisson",
-          "Arachides","Soja","Lait (lactose)","Fruits à coque",
-          "Céleri","Moutarde","Graines de sésame","Anhydride sulfureux et sulfites > 10 mg",
-          "Lupin","Mollusques"
-        ]
-      }
-    };
-
-    const UI = {
-      it: {
-        hero_sub: "Menu digitale • Tocca una categoria per vedere i piatti",
-        scroll_hint: "⬇️ Scorri oppure clicca una categoria",
-        btn_antipasti: "Antipasti",
-        btn_primi: "Primi",
-        btn_polpette: "Polpette per tutti",
-        btn_secondi: "Secondi",
-        btn_contorni: "Contorni",
-        btn_pinse: "Pinse",
-        btn_insalatone: "Insalatone",
-        btn_dolci: "Dolci",
-        sec_antipasti: "Antipasti",
-        sec_primi: "Primi",
-        sec_polpette: "Polpette per tutti",
-        sec_secondi: "Secondi",
-        sec_contorni: "Contorni",
-        sec_pinse: "Pinse",
-        sec_insalatone: "Insalatone",
-        sec_dolci: "Dolci",
-        tag_antipasto: "Antipasto",
-        tag_primo: "Primo",
-        tag_polpette: "Polpette",
-        tag_secondo: "Secondo",
-        tag_contorno: "Contorno",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Insalatona",
-        tag_dolce: "Dolce",
-        tag_extra: "Extra",
-        lb_hint: "Clicca fuori o premi ESC per chiudere",
-        footer_line: "© Tonnarello • Allergeni: chiedi al personale"
-      },
-      en: {
-        hero_sub: "Digital menu • Tap a category to view dishes",
-        scroll_hint: "⬇️ Scroll or tap a category",
-        btn_antipasti: "Starters",
-        btn_primi: "First courses",
-        btn_polpette: "Meatballs for everyone",
-        btn_secondi: "Main courses",
-        btn_contorni: "Sides",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Salads",
-        btn_dolci: "Desserts",
-        sec_antipasti: "Starters",
-        sec_primi: "First courses",
-        sec_polpette: "Meatballs for everyone",
-        sec_secondi: "Main courses",
-        sec_contorni: "Sides",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Salads",
-        sec_dolci: "Desserts",
-        tag_antipasto: "Starter",
-        tag_primo: "First",
-        tag_polpette: "Meatballs",
-        tag_secondo: "Main",
-        tag_contorno: "Side",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Salad",
-        tag_dolce: "Dessert",
-        tag_extra: "Extra",
-        lb_hint: "Click outside or press ESC to close",
-        footer_line: "© Tonnarello • Allergens: ask our staff"
-      },
-      es: {
-        hero_sub: "Menú digital • Toca una categoría para ver los platos",
-        scroll_hint: "⬇️ Desliza o toca una categoría",
-        btn_antipasti: "Entrantes",
-        btn_primi: "Primeros",
-        btn_polpette: "Albóndigas para todos",
-        btn_secondi: "Segundos",
-        btn_contorni: "Guarniciones",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Ensaladas",
-        btn_dolci: "Postres",
-        sec_antipasti: "Entrantes",
-        sec_primi: "Primeros",
-        sec_polpette: "Albóndigas para todos",
-        sec_secondi: "Segundos",
-        sec_contorni: "Guarniciones",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Ensaladas",
-        sec_dolci: "Postres",
-        tag_antipasto: "Entrante",
-        tag_primo: "Primero",
-        tag_polpette: "Albóndigas",
-        tag_secondo: "Segundo",
-        tag_contorno: "Guarnición",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Ensalada",
-        tag_dolce: "Postre",
-        tag_extra: "Extra",
-        lb_hint: "Haz clic fuera o pulsa ESC para cerrar",
-        footer_line: "© Tonnarello • Alérgenos: pregunta al personal"
-      },
-      fr: {
-        hero_sub: "Menu digital • Touchez une catégorie pour voir les plats",
-        scroll_hint: "⬇️ Faites défiler ou touchez une catégorie",
-        btn_antipasti: "Entrées",
-        btn_primi: "Premiers",
-        btn_polpette: "Boulettes pour tous",
-        btn_secondi: "Plats",
-        btn_contorni: "Accompagnements",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Salades",
-        btn_dolci: "Desserts",
-        sec_antipasti: "Entrées",
-        sec_primi: "Premiers",
-        sec_polpette: "Boulettes pour tous",
-        sec_secondi: "Plats",
-        sec_contorni: "Accompagnements",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Salades",
-        sec_dolci: "Desserts",
-        tag_antipasto: "Entrée",
-        tag_primo: "Premier",
-        tag_polpette: "Boulettes",
-        tag_secondo: "Plat",
-        tag_contorno: "Accompagnement",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Salade",
-        tag_dolce: "Dessert",
-        tag_extra: "Extra",
-        lb_hint: "Cliquez hors image ou appuyez sur ÉCHAP pour fermer",
-        footer_line: "© Tonnarello • Allergènes : demandez au personnel"
-      }
-    };
-
-    const DESC = {
-      it: {
-        carciofo_desc: "Tradizione romana.",
-        tris_desc: "Selezione di bruschette.",
-        focaccia_desc: "Calda e profumata.",
-        calamari_desc: "Calamari dorati.",
-        suppli_desc: "Supplì mignon.",
-        patate_desc: "Le nostre patate cacio e pepe.",
-        prosciutto_desc: "Prosciutto crudo e mozzarella di bufala.",
-        caprese_desc: "Mozz. di bufala e pomodoro.",
-        marinara_desc: "Pomodoro, aglio e origano.",
-        tagliere_desc: "Selezione di salumi e formaggi.",
-        tonn_caciopepe_desc: "Cremoso e deciso.",
-        amatriciana_desc: "Ricetta romana.",
-        carbonara_desc: "Cremosa e intensa.",
-        nonnanadia_desc: "Melanzane, olive, capperi e pomodorini.",
-        gricia_desc: "Tradizione romana.",
-        polpettepasta_desc: "Pasta con sugo di polpette.",
-        lasagna_desc: "Al forno.",
-        pesto_desc: "Classico e profumato.",
-        baccala_desc: "Con salsa marinara.",
-        polpettecacio_desc: "Di manzo, cacio e pepe.",
-        polpettesugo_desc: "Al sugo di mamma.",
-        polpette_vaccinara_desc: "Polpette in stile vaccinara.",
-        polpette_melanzane_desc: "Vegetariane, morbide e saporite.",
-        cotoletta_desc: "Croccante e dorata.",
-        saltimbocca_desc: "Tradizione romana.",
-        tagliata_desc: "Con rucola, grana e pomodorini.",
-        straccetti_desc: "Con rucola e grana.",
-        coda_desc: "Ricetta romana.",
-        pollo_desc: "Con peperoni.",
-        abbacchio_desc: "Al forno.",
-        cicoria_desc: "Aglio e peperoncino.",
-        insalata_pomodori_desc: "Fresca e leggera.",
-        patate_forno_desc: "Patate al forno.",
-        patate_fritte_desc: "Croccanti.",
-        pure_desc: "Cremoso.",
-        pinsa_margherita_desc: "Pomodoro, mozzarella e basilico.",
-        pinsa_cacioepepe_desc: "Mozzarella, cacio e pepe.",
-        pinsa_contadina_desc: "Pomodoro, mozzarella, zucchine, melanzane e peperoni.",
-        pinsa_napoli_desc: "Pomodoro, mozzarella, alici e origano.",
-        pinsa_parma_desc: "Pomodoro, mozzarella e prosciutto crudo.",
-        pinsa_quattroformaggi_desc: "Erborinato, mozzarella, provola, brie.",
-        pinsa_diavola_desc: "Pomodoro, mozzarella e salame piccante.",
-        pinsa_capricciosa_desc: "Pomodoro, mozzarella, prosciutto cotto, uovo, olive, carciofini e funghi.",
-        pinsa_boscaiola_desc: "Mozzarella, funghi e salsiccia.",
-        pinsa_salsicciaepatate_desc: "Mozzarella, salsiccia, patate al forno e rosmarino.",
-        pinsa_tonno_desc: "Pomodoro, mozzarella, tonno, cipolla e capperi.",
-        pinsa_rustica_desc: "Pomodoro, mozzarella, salsiccia e cicoria ripassata.",
-        pinsa_bufalina_desc: "Pomodorini freschi, mozzarella, mozzarella di bufala e basilico.",
-        pinsa_salmone_desc: "Mozzarella, salmone affumicato e rucola.",
-        pinsa_funghi_desc: "Pomodoro, mozzarella e funghi.",
-        pinsa_crostino_desc: "Mozzarella, prosciutto cotto e olio EVO.",
-        ins_garbatella_desc: "Misticanza, tonno, mais, uovo sodo, olive, pomodori, carote.",
-        ins_testaccio_desc: "Rucola, bresaola, grana, olive, melanzane.",
-        ins_borgo_desc: "Rucola, salmone affumicato, feta, agrumi, noci.",
-        trastevere_desc: "Misticanza, mozzarella di bufala, pomodori, olive, mais, zucchine.",
-        tiramisu_desc: "Da menu.",
-        cheesecake_bosco_desc: "Da menu.",
-        cheesecake_desc: "Da menu.",
-        pannacotta_desc: "Dolce delicato.",
-        salame_desc: "Fatto in casa con panna.",
-        tortino_desc: "Con cuore caldo.",
-        gelato_desc: "Gelato e caffè."
-      }
-    };
-
-    // ===== Helpers: costruisci griglia allergeni (tradotta) =====
-    function renderAllergens(lang){
-      const a = ALLERGENS[lang] || ALLERGENS.it;
-      const grid = document.getElementById("allergenGrid");
-      if(!grid) return;
-
-      grid.innerHTML = a.items.map((name, idx) => `
-        <div class="allergen-item">
-          <div class="allergen-num">${idx+1}</div>
-          <div class="allergen-name">${name}</div>
-        </div>
-      `).join("");
-    }
-
-    function applyLang(lang){
-      document.documentElement.lang = lang;
-
-      const ui = UI[lang] || UI.it;
-      document.querySelectorAll("[data-ui]").forEach(el => {
-        const key = el.getAttribute("data-ui");
-        if (ui[key]) el.textContent = ui[key];
-      });
-
-      // descrizioni (se non esiste quella lingua, resta italiano)
-      const d = (DESC[lang] || DESC.it);
-      document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
-        const key = p.getAttribute("data-desc-key");
-        if (d && d[key]) p.textContent = d[key];
-      });
-
-      // allergeni tradotti
-      const a = ALLERGENS[lang] || ALLERGENS.it;
-      const t = document.querySelector('[data-ui="allergens_title"]');
-      const txt = document.querySelector('[data-ui="allergens_text"]');
-      if(t) t.textContent = a.title;
-      if(txt) txt.textContent = a.text;
-      renderAllergens(lang);
-
-      localStorage.setItem("menu_lang", lang);
-    }
-
-    // ===== FALLBACK immagini mancanti =====
-    document.querySelectorAll(".card img").forEach(img => {
-      img.addEventListener("error", () => {
-        if (img.dataset.fallbackApplied) return;
-        img.dataset.fallbackApplied = "1";
-        img.src = PLACEHOLDER_SRC;
-        img.style.objectFit = "contain";
-        img.style.background = "#fff";
-        img.style.cursor = "default";
-      });
-    });
-
-// ===== LIGHTBOX =====
-const lb = document.getElementById("lightbox");
-const lbImg = document.getElementById("lbImg");
-const lbClose = document.getElementById("lbClose");
-
-function openLightbox(src, alt){
-  if (src && src.startsWith("data:image/svg+xml")) return;
-  lbImg.src = src;
-  lbImg.alt = alt || "";
-  lb.classList.add("open");
-  lb.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-}
-function closeLightbox(){
-  lb.classList.remove("open");
-  lb.setAttribute("aria-hidden", "true");
-  lbImg.src = "";
-  document.body.style.overflow = "";
-}
-
-lbClose.addEventListener("click", closeLightbox);
-lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
-document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
-
-/* ====== ICONS CONFIG (usa la tua cartella /icons e i tuoi nomi file) ====== */
-const ICONS = {
-  leaf: { type:"svg", html: `
-    <svg class="dish-icon leaf" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M21 3s-6.5.5-11 5-5 11-5 11 6.5-.5 11-5 5-11 5-11Zm-9.4 13.4c-1.2.9-2.4 1.5-3.3 1.9.4-.9 1-2.1 1.9-3.3 1.7-2.3 4.3-4.7 8.1-6.5-1.8 3.8-4.2 6.4-6.7 7.9Z"/>
-    </svg>
-  `},
-
-  fish:      { type:"img", src:"./icons/pesce.png" },
-  pig:       { type:"img", src:"./icons/maiale.png" },
-  cow:       { type:"img", src:"./icons/manzo.png" },
-  chicken:   { type:"img", src:"./icons/pollo.png" },
-  turkey:    { type:"img", src:"./icons/tacchino.png" },
-  squid:     { type:"img", src:"./icons/calamaro.png" },
-  artichoke: { type:"img", src:"./icons/carciofo.png" }
-};
-
-function applyDishIcons(){
-  document.querySelectorAll(".card[data-icons]").forEach(card => {
-    const list = (card.dataset.icons || "")
-      .split(",").map(s => s.trim()).filter(Boolean);
-    if(!list.length) return;
-
-    const nameEl = card.querySelector(".name");
-    if(!nameEl) return;
-
-    // evita duplicati
-    if(nameEl.querySelector(".dish-icons")) return;
-
-    const wrap = document.createElement("span");
-    wrap.className = "dish-icons";
-
-    list.forEach(key => {
-      const icon = ICONS[key];
-      if(!icon) return;
-
-      const badge = document.createElement("span");
-      badge.className = "dish-icon-badge";
-
-      if(icon.type === "svg"){
-        badge.innerHTML = icon.html;
-      } else {
-        const img = document.createElement("img");
-        img.className = "dish-icon-img";
-        img.src = icon.src;
-        img.alt = key;
-        img.draggable = false;
-        badge.appendChild(img);
-      }
-
-      wrap.appendChild(badge);
-    });
-
-    // ✅ metti le icone nella riga (a destra)
-    nameEl.appendChild(wrap);
-  });
-}
-
-function markDishPhotos(){
-  document.querySelectorAll(".card").forEach(card => {
-    const topImg = card.querySelector(":scope > img");
-    if(topImg) topImg.classList.add("dish-photo");
-  });
-}
-
-// ===== INIT (DOM pronto) =====
-window.addEventListener("DOMContentLoaded", () => {
-  const select = document.getElementById("langSelect");
-  const saved = localStorage.getItem("menu_lang") || "it";
-
-  if (select){
-    select.value = saved;
-    select.addEventListener("change", e => applyLang(e.target.value));
+    grid.innerHTML = a.items.map((name, idx) => `
+      <div class="allergen-item">
+        <div class="allergen-num">${idx+1}</div>
+        <div class="allergen-name">${name}</div>
+      </div>
+    `).join("");
   }
 
-  // 1) prima marchio le foto piatti
-  markDishPhotos();
+  function applyLang(lang){
+    document.documentElement.lang = lang;
 
-  // 2) poi attacco il click SOLO alle foto piatti (ora esistono e hanno la classe)
-  document.addEventListener("click", (e) => {
-    const img = e.target.closest("img.dish-photo");
-    if(!img) return;
-    openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    const ui = UI[lang] || UI.it;
+    document.querySelectorAll("[data-ui]").forEach(el => {
+      const key = el.getAttribute("data-ui");
+      if (ui[key]) el.textContent = ui[key];
+    });
+
+    const d = (DESC[lang] || DESC.it);
+    document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
+      const key = p.getAttribute("data-desc-key");
+      if (d && d[key]) p.textContent = d[key];
+    });
+
+    const a = ALLERGENS[lang] || ALLERGENS.it;
+    const t = document.querySelector('[data-ui="allergens_title"]');
+    const txt = document.querySelector('[data-ui="allergens_text"]');
+    if(t) t.textContent = a.title;
+    if(txt) txt.textContent = a.text;
+    renderAllergens(lang);
+
+    localStorage.setItem("menu_lang", lang);
+  }
+
+  // ===== FALLBACK immagini mancanti =====
+  document.querySelectorAll(".card img").forEach(img => {
+    img.addEventListener("error", () => {
+      if (img.dataset.fallbackApplied) return;
+      img.dataset.fallbackApplied = "1";
+      img.src = PLACEHOLDER_SRC;
+      img.style.objectFit = "contain";
+      img.style.background = "#fff";
+      img.style.cursor = "default";
+    });
   });
 
-  // 3) icone e lingua
-  applyDishIcons();
-  applyLang(saved);
-});
+  // ===== LIGHTBOX =====
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbClose = document.getElementById("lbClose");
 
+  function openLightbox(src, alt){
+    if (src && src.startsWith("data:image/svg+xml")) return;
+    lbImg.src = src;
+    lbImg.alt = alt || "";
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeLightbox(){
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+    lbImg.src = "";
+    document.body.style.overflow = "";
+  }
 
-  </script>
+  lbClose.addEventListener("click", closeLightbox);
+  lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
+  document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
+
+  /* ====== ICONS CONFIG (usa la tua cartella /icons e i tuoi nomi file) ====== */
+  const ICONS = {
+    leaf: { type:"svg", html: `
+      <svg class="dish-icon leaf" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M21 3s-6.5.5-11 5-5 11-5 11 6.5-.5 11-5 5-11 5-11Zm-9.4 13.4c-1.2.9-2.4 1.5-3.3 1.9.4-.9 1-2.1 1.9-3.3 1.7-2.3 4.3-4.7 8.1-6.5-1.8 3.8-4.2 6.4-6.7 7.9Z"/>
+      </svg>
+    `},
+    fish:      { type:"img", src:"./icons/pesce.png" },
+    pig:       { type:"img", src:"./icons/maiale.png" },
+    cow:       { type:"img", src:"./icons/manzo.png" },
+    chicken:   { type:"img", src:"./icons/pollo.png" },
+    turkey:    { type:"img", src:"./icons/tacchino.png" },
+    squid:     { type:"img", src:"./icons/calamaro.png" },
+    artichoke: { type:"img", src:"./icons/carciofo.png" }
+  };
+
+  function applyDishIcons(){
+    document.querySelectorAll(".card[data-icons]").forEach(card => {
+      const list = (card.dataset.icons || "").split(",").map(s => s.trim()).filter(Boolean);
+      if(!list.length) return;
+
+      const nameEl = card.querySelector(".name");
+      if(!nameEl) return;
+
+      if(nameEl.querySelector(".dish-icons")) return;
+
+      const wrap = document.createElement("span");
+      wrap.className = "dish-icons";
+
+      list.forEach(key => {
+        const icon = ICONS[key];
+        if(!icon) return;
+
+        const badge = document.createElement("span");
+        badge.className = "dish-icon-badge";
+
+        if(icon.type === "svg"){
+          badge.innerHTML = icon.html;
+        } else {
+          const img = document.createElement("img");
+          img.className = "dish-icon-img";
+          img.src = icon.src;
+          img.alt = key;
+          img.draggable = false;
+          badge.appendChild(img);
+        }
+        wrap.appendChild(badge);
+      });
+
+      nameEl.appendChild(wrap);
+    });
+  }
+
+  function markDishPhotos(){
+    document.querySelectorAll(".card").forEach(card => {
+      const topImg = card.querySelector(":scope > img");
+      if(topImg) topImg.classList.add("dish-photo");
+    });
+  }
+
+  // ===== INIT =====
+  window.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("langSelect");
+    const saved = localStorage.getItem("menu_lang") || "it";
+
+    if (select){
+      select.value = saved;
+      select.addEventListener("change", e => applyLang(e.target.value));
+    }
+
+    markDishPhotos();
+
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest("img.dish-photo");
+      if(!img) return;
+      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    });
+
+    applyDishIcons();
+    applyLang(saved);
+  });
+</script>
 </body>
 </html>
