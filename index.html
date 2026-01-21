@@ -214,6 +214,59 @@
       padding: 8px 12px;
       border-radius: 999px;
     }
+    /* ===== BOX ALLERGENI ===== */
+.allergens{
+  margin-top: 22px;
+  color: #fff;
+  background: rgba(0,0,0,0.42);         /* trasparente */
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 18px;
+  padding: 16px 16px 14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+}
+.allergens h3{
+  margin: 0 0 10px;
+  font-size: 18px;
+  letter-spacing: .2px;
+}
+.allergens p{
+  margin: 0 0 10px;
+  opacity: .92;
+  line-height: 1.35;
+  font-size: 14px;
+}
+.allergen-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px 16px;
+}
+.allergen-item{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+.allergen-num{
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.18);
+  flex: 0 0 auto;
+}
+.allergen-text{
+  font-size: 14px;
+  line-height: 1.25;
+}
+
   </style>
 </head>
 
@@ -882,6 +935,32 @@
 
         </div>
       </section>
+<!-- ALLERGENI -->
+<section class="allergens" id="allergeni">
+  <h3>Legenda Allergeni</h3>
+
+  <p>
+    Ai sensi del Reg. (UE) n.1169/2011, negli alimenti e nelle bevande preparati in questo esercizio
+    possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Per informazioni rivolgersi al personale.
+  </p>
+
+  <div class="allergen-grid">
+    <div class="allergen-item"><div class="allergen-num">1</div><div class="allergen-text">Glutine e derivati</div></div>
+    <div class="allergen-item"><div class="allergen-num">2</div><div class="allergen-text">Crostacei</div></div>
+    <div class="allergen-item"><div class="allergen-num">3</div><div class="allergen-text">Uova e derivati</div></div>
+    <div class="allergen-item"><div class="allergen-num">4</div><div class="allergen-text">Pesce</div></div>
+    <div class="allergen-item"><div class="allergen-num">5</div><div class="allergen-text">Arachidi</div></div>
+    <div class="allergen-item"><div class="allergen-num">6</div><div class="allergen-text">Soia</div></div>
+    <div class="allergen-item"><div class="allergen-num">7</div><div class="allergen-text">Latte e derivati (lattosio)</div></div>
+    <div class="allergen-item"><div class="allergen-num">8</div><div class="allergen-text">Frutta a guscio</div></div>
+    <div class="allergen-item"><div class="allergen-num">9</div><div class="allergen-text">Sedano</div></div>
+    <div class="allergen-item"><div class="allergen-num">10</div><div class="allergen-text">Senape</div></div>
+    <div class="allergen-item"><div class="allergen-num">11</div><div class="allergen-text">Semi di sesamo</div></div>
+    <div class="allergen-item"><div class="allergen-num">12</div><div class="allergen-text">Anidride solforosa e solfiti &gt; 10 mg</div></div>
+    <div class="allergen-item"><div class="allergen-num">13</div><div class="allergen-text">Lupini</div></div>
+    <div class="allergen-item"><div class="allergen-num">14</div><div class="allergen-text">Molluschi</div></div>
+  </div>
+</section>
 
     </div>
   </div>
