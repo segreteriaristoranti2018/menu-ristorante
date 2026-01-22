@@ -44,6 +44,7 @@
       z-index:-1;
     }
 /* ===== ICONE VICINO AL NOME (non cliccabili) ===== */
+/* ===== ICONE (vicino alla pill Antipasto/Primo) ===== */
 .dish-icons{
   display:inline-flex;
   align-items:center;
@@ -58,9 +59,37 @@
   background: transparent;
   border: 0;
   box-shadow: none;
+  padding: 0;
   width: auto;
   height: auto;
+  border-radius: 0;
+}
+
+.dish-icon{
+  width: 16px;
+  height: 16px;
+  display:block;
+  pointer-events:none;
+}
+.dish-icon.leaf{ color:#2e7d32; }
+
+.dish-icon-img{
+  width: 16px;
+  height: 16px;
+  display:block;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
   padding: 0;
+  box-shadow: none;
+  user-select:none;
+  pointer-events:none;
+}
+    .meta-left{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  min-width: 0;
 }
 
 /* foglia SVG */
@@ -1207,41 +1236,57 @@
   };
 
   function applyDishIcons(){
-    document.querySelectorAll(".card[data-icons]").forEach(card => {
-      const list = (card.dataset.icons || "").split(",").map(s => s.trim()).filter(Boolean);
-      if(!list.length) return;
+  document.querySelectorAll(".card[data-icons]").forEach(card => {
+    const list = (card.dataset.icons || "")
+      .split(",").map(s => s.trim()).filter(Boolean);
+    if(!list.length) return;
 
-      const nameEl = card.querySelector(".name");
-      if(!nameEl) return;
+    // punti dove metterle: accanto alla pill (dentro .row)
+    const row = card.querySelector(".row");
+    const tag = row ? row.querySelector(".tag") : null;
+    if(!row || !tag) return;
 
-      if(nameEl.querySelector(".dish-icons")) return;
+    // evita duplicati
+    if(row.querySelector(".dish-icons")) return;
 
-      const wrap = document.createElement("span");
-      wrap.className = "dish-icons";
+    // crea contenitore sinistro (tag + icone)
+    let left = row.querySelector(".meta-left");
+    if(!left){
+      left = document.createElement("span");
+      left.className = "meta-left";
+      row.insertBefore(left, tag);  // mettiamo left prima del tag
+      left.appendChild(tag);        // spostiamo la pill dentro left
+    }
 
-      list.forEach(key => {
-        const icon = ICONS[key];
-        if(!icon) return;
+    // wrapper icone
+    const wrap = document.createElement("span");
+    wrap.className = "dish-icons";
 
-        const badge = document.createElement("span");
-        badge.className = "dish-icon-badge";
+    list.forEach(key => {
+      const icon = ICONS[key];
+      if(!icon) return;
 
-        if(icon.type === "svg"){
-          badge.innerHTML = icon.html;
-        } else {
-          const img = document.createElement("img");
-          img.className = "dish-icon-img";
-          img.src = icon.src;
-          img.alt = key;
-          img.draggable = false;
-          badge.appendChild(img);
-        }
-        wrap.appendChild(badge);
-      });
+      const badge = document.createElement("span");
+      badge.className = "dish-icon-badge";
 
-      nameEl.appendChild(wrap);
+      if(icon.type === "svg"){
+        badge.innerHTML = icon.html;
+      } else {
+        const img = document.createElement("img");
+        img.className = "dish-icon-img";
+        img.src = icon.src;
+        img.alt = key;
+        img.draggable = false;
+        badge.appendChild(img);
+      }
+
+      wrap.appendChild(badge);
     });
-  }
+
+    // ✅ icone attaccate alla pill
+    left.appendChild(wrap);
+  });
+}
 
   function markDishPhotos(){
     document.querySelectorAll(".card").forEach(card => {
