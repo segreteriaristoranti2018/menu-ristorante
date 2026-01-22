@@ -1483,16 +1483,39 @@ Pour plus d'informations, demandez au personnel.`,
 
     // ✅ struttura pronta: qui puoi (poi) mettere le descrizioni tradotte per lingua
     const DESC = {
-      it: {},
-      en: {},
-      es: {},
-      fr: {},
-      ko: {},
-      ja: {},
-      zh: {},
-      ar: {}
-    };
-
+     it: {
+    carciofo_desc: "Piatto tipico della tradizione Romana.",
+    patate_desc: "Le nostre patate cacio e pepe."
+  },
+  en: {
+    carciofo_desc: "A classic Roman traditional dish.",
+    patate_desc: "Our cacio e pepe potatoes."
+  },
+  es: {
+    carciofo_desc: "Plato típico de la tradición romana.",
+    patate_desc: "Nuestras patatas cacio e pepe."
+  },
+  fr: {
+    carciofo_desc: "Plat typique de la tradition romaine.",
+    patate_desc: "Nos pommes de terre cacio e pepe."
+  },
+  ko: {
+    carciofo_desc: "로마 전통 요리입니다.",
+    patate_desc: "카초 에 페페 감자 요리입니다."
+  },
+  ja: {
+    carciofo_desc: "ローマ伝統の一品です。",
+    patate_desc: "カチョエペペ風ポテトです。"
+  },
+  zh: {
+    carciofo_desc: "罗马传统经典菜品。",
+    patate_desc: "我们的奶酪黑胡椒风味土豆。"
+  },
+  ar: {
+    carciofo_desc: "طبق تقليدي من روما.",
+    patate_desc: "بطاطس بنكهة كاتشو إي بيبي."
+  }
+};
     function renderAllergens(lang){
       const a = ALLERGENS[lang] || ALLERGENS.it;
       const grid = document.getElementById("allergenGrid");
