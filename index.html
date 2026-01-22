@@ -1104,392 +1104,408 @@
   </div>
 
   <script>
-    // ===== Placeholder immagine (se file mancante) =====
-    const PLACEHOLDER_SRC =
-      'data:image/svg+xml;charset=utf-8,' +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#f0f0f0"/>
-              <stop offset="1" stop-color="#e2e2e2"/>
-            </linearGradient>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#g)"/>
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-                font-family="Arial" font-size="44" fill="#777">
-            Immagine non disponibile
-          </text>
-        </svg>
-      `);
+ // ===== Placeholder immagine (se file mancante) =====
+  const PLACEHOLDER_SRC =
+    'data:image/svg+xml;charset=utf-8,' +
+    encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0" stop-color="#f0f0f0"/>
+            <stop offset="1" stop-color="#e2e2e2"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+              font-family="Arial" font-size="44" fill="#777">
+          Immagine non disponibile
+        </text>
+      </svg>
+    `);
 
-    // ===== Traduzioni UI + Allergeni =====
-    const ALLERGENS = {
-      it: {
-        title: "Allergeni",
-        text: `Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
+  // ===== localStorage safe (mobile/privato) =====
+  function safeGet(key){
+    try { return localStorage.getItem(key); } catch(e){ return null; }
+  }
+  function safeSet(key, val){
+    try { localStorage.setItem(key, val); } catch(e){ /* ignore */ }
+  }
+
+  // ===== Traduzioni Allergeni =====
+  const ALLERGENS = {
+    it: {
+      title: "Allergeni",
+      text: `Ai sensi del Reg. (UE) n. 1169/2011, si avvisa la gentile clientela che negli alimenti e nelle bevande preparati in questo esercizio,
 possono essere contenuti ingredienti o coadiuvanti considerati allergeni. Le informazioni circa la presenza di sostanze o prodotti che provocano
 allergie o intolleranze sono disponibili rivolgendosi al personale in servizio e sul menù.`,
-        items: [
-          "Cereali contenenti glutine", "Crostacei", "Uova", "Pesce",
-          "Arachidi", "Soia", "Latte", "Frutta a guscio",
-          "Sedano", "Senape", "Semi di sesamo", "Anidride solforosa e solfiti",
-          "Lupini", "Molluschi"
-        ]
-      },
-      en: {
-        title: "Allergens",
-        text: `According to EU Regulation 1169/2011, please be informed that foods and drinks prepared in this restaurant may contain allergens.
+      items: [
+        "Cereali contenenti glutine", "Crostacei", "Uova", "Pesce",
+        "Arachidi", "Soia", "Latte", "Frutta a guscio",
+        "Sedano", "Senape", "Semi di sesamo", "Anidride solforosa e solfiti",
+        "Lupini", "Molluschi"
+      ]
+    },
+    en: {
+      title: "Allergens",
+      text: `According to EU Regulation 1169/2011, foods and drinks prepared in this restaurant may contain allergens.
 For information, ask our staff.`,
-        items: [
-          "Gluten cereals", "Crustaceans", "Eggs", "Fish",
-          "Peanuts", "Soy", "Milk", "Nuts",
-          "Celery", "Mustard", "Sesame", "Sulphites",
-          "Lupin", "Molluscs"
-        ]
-      },
-      es: {
-        title: "Alérgenos",
-        text: `Según el Reglamento (UE) 1169/2011, se informa que los alimentos y bebidas preparados pueden contener alérgenos.
+      items: [
+        "Gluten cereals", "Crustaceans", "Eggs", "Fish",
+        "Peanuts", "Soy", "Milk", "Nuts",
+        "Celery", "Mustard", "Sesame", "Sulphites",
+        "Lupin", "Molluscs"
+      ]
+    },
+    es: {
+      title: "Alérgenos",
+      text: `Según el Reglamento (UE) 1169/2011, se informa que los alimentos y bebidas preparados pueden contener alérgenos.
 Para más información, consulte al personal.`,
-        items: [
-          "Cereales con gluten", "Crustáceos", "Huevos", "Pescado",
-          "Cacahuetes", "Soja", "Leche", "Frutos de cáscara",
-          "Apio", "Mostaza", "Sésamo", "Sulfitos",
-          "Altramuces", "Moluscos"
-        ]
-      },
-      fr: {
-        title: "Allergènes",
-        text: `Conformément au règlement (UE) 1169/2011, les aliments et boissons préparés peuvent contenir des allergènes.
+      items: [
+        "Cereales con gluten", "Crustáceos", "Huevos", "Pescado",
+        "Cacahuetes", "Soja", "Leche", "Frutos de cáscara",
+        "Apio", "Mostaza", "Sésamo", "Sulfitos",
+        "Altramuces", "Moluscos"
+      ]
+    },
+    fr: {
+      title: "Allergènes",
+      text: `Conformément au règlement (UE) 1169/2011, les aliments et boissons préparés peuvent contenir des allergènes.
 Pour plus d'informations, demandez au personnel.`,
-        items: [
-          "Céréales contenant du gluten", "Crustacés", "Oeufs", "Poisson",
-          "Arachides", "Soja", "Lait", "Fruits à coque",
-          "Céleri", "Moutarde", "Sésame", "Sulfites",
-          "Lupin", "Mollusques"
-        ]
-      },
-      ko: {
-        title: "알레르기 유발 물질",
-        text: `EU 규정 1169/2011에 따라, 본 매장에서 제공되는 음식과 음료에는 알레르기 유발 물질이 포함될 수 있습니다.
+      items: [
+        "Céréales contenant du gluten", "Crustacés", "Oeufs", "Poisson",
+        "Arachides", "Soja", "Lait", "Fruits à coque",
+        "Céleri", "Moutarde", "Sésame", "Sulfites",
+        "Lupin", "Mollusques"
+      ]
+    },
+    ko: {
+      title: "알레르기 유발 물질",
+      text: `EU 규정 1169/2011에 따라, 본 매장에서 제공되는 음식과 음료에는 알레르기 유발 물질이 포함될 수 있습니다.
 자세한 내용은 직원에게 문의해 주세요.`,
-        items: [
-          "글루텐 함유 곡물", "갑각류", "달걀", "생선",
-          "땅콩", "대두", "우유", "견과류",
-          "셀러리", "겨자", "참깨", "아황산염",
-          "루핀", "연체류"
-        ]
-      },
-      ja: {
-        title: "アレルゲン",
-        text: `EU規則1169/2011に基づき、当店の飲食物にはアレルゲンが含まれる場合があります。
+      items: [
+        "글루텐 함유 곡물", "갑각류", "달걀", "생선",
+        "땅콩", "대두", "우유", "견과류",
+        "셀러리", "겨자", "참깨", "아황산염",
+        "루핀", "연체류"
+      ]
+    },
+    ja: {
+      title: "アレルゲン",
+      text: `EU規則1169/2011に基づき、当店の飲食物にはアレルゲンが含まれる場合があります。
 詳細はスタッフまでお問い合わせください。`,
-        items: [
-          "グルテン含有穀物", "甲殻類", "卵", "魚",
-          "落花生", "大豆", "乳", "木の実",
-          "セロリ", "マスタード", "ごま", "亜硫酸塩",
-          "ルピナス", "軟体動物"
-        ]
-      },
-      zh: {
-        title: "过敏原",
-        text: `根据欧盟法规1169/2011，本店提供的食品和饮料可能含有过敏原。
+      items: [
+        "グルテン含有穀物", "甲殻類", "卵", "魚",
+        "落花生", "大豆", "乳", "木の実",
+        "セロリ", "マスタード", "ごま", "亜硫酸塩",
+        "ルピナス", "軟体動物"
+      ]
+    },
+    zh: {
+      title: "过敏原",
+      text: `根据欧盟法规1169/2011，本店提供的食品和饮料可能含有过敏原。
 详情请咨询工作人员。`,
-        items: [
-          "含麸质谷物", "甲壳类", "蛋类", "鱼类",
-          "花生", "大豆", "乳", "坚果",
-          "芹菜", "芥末", "芝麻", "亚硫酸盐",
-          "羽扇豆", "软体动物"
-        ]
-      },
-      ar: {
-        title: "مسببات الحساسية",
-        text: `وفقًا للائحة الاتحاد الأوروبي 1169/2011، قد تحتوي الأطعمة والمشروبات في هذا المطعم على مسببات حساسية.
+      items: [
+        "含麸质谷物", "甲壳类", "蛋类", "鱼类",
+        "花生", "大豆", "乳", "坚果",
+        "芹菜", "芥末", "芝麻", "亚硫酸盐",
+        "羽扇豆", "软体动物"
+      ]
+    },
+    ar: {
+      title: "مسببات الحساسية",
+      text: `وفقًا للائحة الاتحاد الأوروبي 1169/2011، قد تحتوي الأطعمة والمشروبات في هذا المطعم على مسببات حساسية.
 لمزيد من المعلومات اسأل الموظفين.`,
-        items: [
-          "حبوب تحتوي على الغلوتين", "قشريات", "بيض", "سمك",
-          "فول سوداني", "صويا", "حليب", "مكسرات",
-          "كرفس", "خردل", "سمسم", "كبريتيت",
-          "ترمس", "رخويات"
-        ]
-      }
-    };
+      items: [
+        "حبوب تحتوي على الغلوتين", "قشريات", "بيض", "سمك",
+        "فول سوداني", "صويا", "حليب", "مكسرات",
+        "كرفس", "خردل", "سمسم", "كبريتيت",
+        "ترمس", "رخويات"
+      ]
+    }
+  };
 
-    const UI = {
-      it: {
-        hero_sub: "Menu digitale • Tocca una categoria per vedere i piatti",
-        btn_antipasti: "Antipasti",
-        btn_primi: "Primi",
-        btn_polpette: "Polpette per tutti",
-        btn_secondi: "Secondi",
-        btn_contorni: "Contorni",
-        btn_pinse: "Pinse",
-        btn_insalatone: "Insalatone",
-        btn_dolci: "Dolci",
-        scroll_hint: "⬇️ Scorri oppure clicca una categoria",
-        sec_antipasti: "Antipasti",
-        sec_primi: "Primi",
-        sec_polpette: "Polpette per tutti",
-        sec_secondi: "Secondi",
-        sec_contorni: "Contorni",
-        sec_pinse: "Pinse",
-        sec_insalatone: "Insalatone",
-        sec_dolci: "Dolci",
-        tag_antipasto: "Antipasto",
-        tag_primo: "Primo",
-        tag_polpette: "Polpette",
-        tag_secondo: "Secondo",
-        tag_contorno: "Contorno",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Insalatona",
-        tag_dolce: "Dolce",
-        tag_extra: "Extra",
-        allergens_title: "Allergeni",
-        allergens_text: ALLERGENS.it.text,
-        footer_line: "© Tonnarello • Allergeni: chiedi al personale",
-        service_line: "servizio per i ragazzi che vi hanno servito e sorriso 5%",
-        lb_hint: "Clicca fuori o premi ESC per chiudere"
-      },
-      en: {
-        hero_sub: "Digital menu • Tap a category to see the dishes",
-        btn_antipasti: "Starters",
-        btn_primi: "First courses",
-        btn_polpette: "Meatballs for everyone",
-        btn_secondi: "Main courses",
-        btn_contorni: "Sides",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Salads",
-        btn_dolci: "Desserts",
-        scroll_hint: "⬇️ Scroll or tap a category",
-        sec_antipasti: "Starters",
-        sec_primi: "First courses",
-        sec_polpette: "Meatballs",
-        sec_secondi: "Main courses",
-        sec_contorni: "Sides",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Salads",
-        sec_dolci: "Desserts",
-        tag_antipasto: "Starter",
-        tag_primo: "First",
-        tag_polpette: "Meatballs",
-        tag_secondo: "Main",
-        tag_contorno: "Side",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Salad",
-        tag_dolce: "Dessert",
-        tag_extra: "Extra",
-        allergens_title: ALLERGENS.en.title,
-        allergens_text: ALLERGENS.en.text,
-        footer_line: "© Tonnarello • Allergens: ask our staff",
-        service_line: "service for the guys who served you and smiled 5%",
-        lb_hint: "Click outside or press ESC to close"
-      },
-      es: {
-        hero_sub: "Menú digital • Toca una categoría para ver los platos",
-        btn_antipasti: "Entrantes",
-        btn_primi: "Primeros",
-        btn_polpette: "Albóndigas para todos",
-        btn_secondi: "Segundos",
-        btn_contorni: "Guarniciones",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Ensaladas",
-        btn_dolci: "Postres",
-        scroll_hint: "⬇️ Desplaza o toca una categoría",
-        sec_antipasti: "Entrantes",
-        sec_primi: "Primeros",
-        sec_polpette: "Albóndigas",
-        sec_secondi: "Segundos",
-        sec_contorni: "Guarniciones",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Ensaladas",
-        sec_dolci: "Postres",
-        tag_antipasto: "Entrante",
-        tag_primo: "Primero",
-        tag_polpette: "Albóndigas",
-        tag_secondo: "Segundo",
-        tag_contorno: "Guarnición",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Ensalada",
-        tag_dolce: "Postre",
-        tag_extra: "Extra",
-        allergens_title: ALLERGENS.es.title,
-        allergens_text: ALLERGENS.es.text,
-        footer_line: "© Tonnarello • Alérgenos: pregunta al personal",
-        service_line: "servicio para los chicos que te atendieron y sonrieron 5%",
-        lb_hint: "Haz clic fuera o pulsa ESC para cerrar"
-      },
-      fr: {
-        hero_sub: "Menu digital • Touchez une catégorie pour voir les plats",
-        btn_antipasti: "Entrées",
-        btn_primi: "Premiers",
-        btn_polpette: "Boulettes pour tous",
-        btn_secondi: "Plats",
-        btn_contorni: "Accompagnements",
-        btn_pinse: "Pinsa",
-        btn_insalatone: "Salades",
-        btn_dolci: "Desserts",
-        scroll_hint: "⬇️ Faites défiler ou touchez une catégorie",
-        sec_antipasti: "Entrées",
-        sec_primi: "Premiers",
-        sec_polpette: "Boulettes",
-        sec_secondi: "Plats",
-        sec_contorni: "Accompagnements",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "Salades",
-        sec_dolci: "Desserts",
-        tag_antipasto: "Entrée",
-        tag_primo: "Premier",
-        tag_polpette: "Boulettes",
-        tag_secondo: "Plat",
-        tag_contorno: "Accompagnement",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "Salade",
-        tag_dolce: "Dessert",
-        tag_extra: "Extra",
-        allergens_title: ALLERGENS.fr.title,
-        allergens_text: ALLERGENS.fr.text,
-        footer_line: "© Tonnarello • Allergènes : demandez au personnel",
-        service_line: "service pour les garçons qui vous ont servi et souri 5%",
-        lb_hint: "Cliquez dehors ou appuyez sur Échap pour fermer"
-      },
-      ko: {
-        hero_sub: "디지털 메뉴 • 카테고리를 눌러 메뉴를 확인하세요",
-        btn_antipasti: "전채",
-        btn_primi: "파스타",
-        btn_polpette: "미트볼",
-        btn_secondi: "메인",
-        btn_contorni: "사이드",
-        btn_pinse: "핀사",
-        btn_insalatone: "샐러드",
-        btn_dolci: "디저트",
-        scroll_hint: "⬇️ 스크롤하거나 카테고리를 누르세요",
-        sec_antipasti: "전채",
-        sec_primi: "파스타",
-        sec_polpette: "미트볼",
-        sec_secondi: "메인",
-        sec_contorni: "사이드",
-        sec_pinse: "핀사",
-        sec_insalatone: "샐러드",
-        sec_dolci: "디저트",
-        tag_antipasto: "전채",
-        tag_primo: "파스타",
-        tag_polpette: "미트볼",
-        tag_secondo: "메인",
-        tag_contorno: "사이드",
-        tag_pinsa: "핀사",
-        tag_insalatona: "샐러드",
-        tag_dolce: "디저트",
-        tag_extra: "추가",
-        allergens_title: ALLERGENS.ko.title,
-        allergens_text: ALLERGENS.ko.text,
-        footer_line: "© Tonnarello • 알레르기 유발 물질: 직원에게 문의",
-        service_line: "서비스 요금(직원) 5%",
-        lb_hint: "바깥을 클릭하거나 ESC를 누르면 닫힙니다"
-      },
-      ja: {
-        hero_sub: "デジタルメニュー • カテゴリーをタップしてください",
-        btn_antipasti: "前菜",
-        btn_primi: "パスタ",
-        btn_polpette: "ミートボール",
-        btn_secondi: "メイン",
-        btn_contorni: "付け合わせ",
-        btn_pinse: "ピンサ",
-        btn_insalatone: "サラダ",
-        btn_dolci: "デザート",
-        scroll_hint: "⬇️ スクロール または カテゴリーをタップ",
-        sec_antipasti: "前菜",
-        sec_primi: "パスタ",
-        sec_polpette: "ミートボール",
-        sec_secondi: "メイン",
-        sec_contorni: "付け合わせ",
-        sec_pinse: "ピンサ",
-        sec_insalatone: "サラダ",
-        sec_dolci: "デザート",
-        tag_antipasto: "前菜",
-        tag_primo: "パスタ",
-        tag_polpette: "ミートボール",
-        tag_secondo: "メイン",
-        tag_contorno: "付け合わせ",
-        tag_pinsa: "ピンサ",
-        tag_insalatona: "サラダ",
-        tag_dolce: "デザート",
-        tag_extra: "追加",
-        allergens_title: ALLERGENS.ja.title,
-        allergens_text: ALLERGENS.ja.text,
-        footer_line: "© Tonnarello • アレルゲン: スタッフに確認してください",
-        service_line: "サービス料(スタッフ) 5%",
-        lb_hint: "外側をクリック、または ESC で閉じる"
-      },
-      zh: {
-        hero_sub: "电子菜单 • 点击分类查看菜品",
-        btn_antipasti: "前菜",
-        btn_primi: "意面",
-        btn_polpette: "肉丸",
-        btn_secondi: "主菜",
-        btn_contorni: "配菜",
-        btn_pinse: 披萨饼,
-        btn_insalatone: "沙拉",
-        btn_dolci: "甜点",
-        scroll_hint: "⬇️ 滑动或点击分类",
-        sec_antipasti: "前菜",
-        sec_primi: "意面",
-        sec_polpette: "肉丸",
-        sec_secondi: "主菜",
-        sec_contorni: "配菜",
-        sec_pinse: "Pinsa",
-        sec_insalatone: "沙拉",
-        sec_dolci: "甜点",
-        tag_antipasto: "前菜",
-        tag_primo: "意面",
-        tag_polpette: "肉丸",
-        tag_secondo: "主菜",
-        tag_contorno: "配菜",
-        tag_pinsa: "Pinsa",
-        tag_insalatona: "沙拉",
-        tag_dolce: "甜点",
-        tag_extra: "加料",
-        allergens_title: ALLERGENS.zh.title,
-        allergens_text: ALLERGENS.zh.text,
-        footer_line: "© Tonnarello • 过敏原: 请咨询工作人员",
-        service_line: "服务费(员工) 5%",
-        lb_hint: "点击外部或按 ESC 关闭"
-      },
-      ar: {
-        hero_sub: "قائمة رقمية • اضغط على الفئة لعرض الأطباق",
-        btn_antipasti: "مقبلات",
-        btn_primi: "باستا",
-        btn_polpette: "كرات لحم",
-        btn_secondi: "طبق رئيسي",
-        btn_contorni: "أطباق جانبية",
-        btn_pinse: "بينسا",
-        btn_insalatone: "سلطات",
-        btn_dolci: "حلويات",
-        scroll_hint: "⬇️ مرّر أو اضغط على فئة",
-        sec_antipasti: "مقبلات",
-        sec_primi: "باستا",
-        sec_polpette: "كرات لحم",
-        sec_secondi: "أطباق رئيسية",
-        sec_contorni: "أطباق جانبية",
-        sec_pinse: "بينسا",
-        sec_insalatone: "سلطات",
-        sec_dolci: "حلويات",
-        tag_antipasto: "مقبلات",
-        tag_primo: "باستا",
-        tag_polpette: "كرات لحم",
-        tag_secondo: "رئيسي",
-        tag_contorno: "جانبي",
-        tag_pinsa: "بينسا",
-        tag_insalatona: "سلطة",
-        tag_dolce: "حلوى",
-        tag_extra: "إضافي",
-        allergens_title: ALLERGENS.ar.title,
-        allergens_text: ALLERGENS.ar.text,
-        footer_line: "© Tonnarello • مسببات الحساسية: اسأل الموظفين",
-        service_line: "رسوم خدمة (الموظفين) 5%",
-        lb_hint: "انقر خارجًا أو اضغط ESC للإغلاق"
-      }
-    };
+  // ===== Traduzioni UI =====
+  const UI = {
+    it: {
+      hero_sub: "Menu digitale • Tocca una categoria per vedere i piatti",
+      btn_antipasti: "Antipasti",
+      btn_primi: "Primi",
+      btn_polpette: "Polpette per tutti",
+      btn_secondi: "Secondi",
+      btn_contorni: "Contorni",
+      btn_pinse: "Pinse",
+      btn_insalatone: "Insalatone",
+      btn_dolci: "Dolci",
+      scroll_hint: "⬇️ Scorri oppure clicca una categoria",
+      sec_antipasti: "Antipasti",
+      sec_primi: "Primi",
+      sec_polpette: "Polpette per tutti",
+      sec_secondi: "Secondi",
+      sec_contorni: "Contorni",
+      sec_pinse: "Pinse",
+      sec_insalatone: "Insalatone",
+      sec_dolci: "Dolci",
+      tag_antipasto: "Antipasto",
+      tag_primo: "Primo",
+      tag_polpette: "Polpette",
+      tag_secondo: "Secondo",
+      tag_contorno: "Contorno",
+      tag_pinsa: "Pinsa",
+      tag_insalatona: "Insalatona",
+      tag_dolce: "Dolce",
+      tag_extra: "Extra",
+      allergens_title: "Allergeni",
+      allergens_text: ALLERGENS.it.text,
+      footer_line: "© Tonnarello • Allergeni: chiedi al personale",
+      service_line: "servizio per i ragazzi che vi hanno servito e sorriso 5%",
+      lb_hint: "Clicca fuori o premi ESC per chiudere"
+    },
+
+    en: {
+      hero_sub: "Digital menu • Tap a category to see the dishes",
+      btn_antipasti: "Starters",
+      btn_primi: "First courses",
+      btn_polpette: "Meatballs for everyone",
+      btn_secondi: "Main courses",
+      btn_contorni: "Sides",
+      btn_pinse: "Pinsa",
+      btn_insalatone: "Salads",
+      btn_dolci: "Desserts",
+      scroll_hint: "⬇️ Scroll or tap a category",
+      sec_antipasti: "Starters",
+      sec_primi: "First courses",
+      sec_polpette: "Meatballs",
+      sec_secondi: "Main courses",
+      sec_contorni: "Sides",
+      sec_pinse: "Pinsa",
+      sec_insalatone: "Salads",
+      sec_dolci: "Desserts",
+      tag_antipasto: "Starter",
+      tag_primo: "First",
+      tag_polpette: "Meatballs",
+      tag_secondo: "Main",
+      tag_contorno: "Side",
+      tag_pinsa: "Pinsa",
+      tag_insalatona: "Salad",
+      tag_dolce: "Dessert",
+      tag_extra: "Extra",
+      allergens_title: ALLERGENS.en.title,
+      allergens_text: ALLERGENS.en.text,
+      footer_line: "© Tonnarello • Allergens: ask our staff",
+      service_line: "service for the guys who served you and smiled 5%",
+      lb_hint: "Click outside or press ESC to close"
+    },
+
+    es: {
+      hero_sub: "Menú digital • Toca una categoría para ver los platos",
+      btn_antipasti: "Entrantes",
+      btn_primi: "Primeros",
+      btn_polpette: "Albóndigas para todos",
+      btn_secondi: "Segundos",
+      btn_contorni: "Guarniciones",
+      btn_pinse: "Pinsa",
+      btn_insalatone: "Ensaladas",
+      btn_dolci: "Postres",
+      scroll_hint: "⬇️ Desplaza o toca una categoría",
+      sec_antipasti: "Entrantes",
+      sec_primi: "Primeros",
+      sec_polpette: "Albóndigas",
+      sec_secondi: "Segundos",
+      sec_contorni: "Guarniciones",
+      sec_pinse: "Pinsa",
+      sec_insalatone: "Ensaladas",
+      sec_dolci: "Postres",
+      tag_antipasto: "Entrante",
+      tag_primo: "Primero",
+      tag_polpette: "Albóndigas",
+      tag_secondo: "Segundo",
+      tag_contorno: "Guarnición",
+      tag_pinsa: "Pinsa",
+      tag_insalatona: "Ensalada",
+      tag_dolce: "Postre",
+      tag_extra: "Extra",
+      allergens_title: ALLERGENS.es.title,
+      allergens_text: ALLERGENS.es.text,
+      footer_line: "© Tonnarello • Alérgenos: pregunta al personal",
+      service_line: "servicio para los chicos que te atendieron y sonrieron 5%",
+      lb_hint: "Haz clic fuera o pulsa ESC para cerrar"
+    },
+
+    fr: {
+      hero_sub: "Menu digital • Touchez une catégorie pour voir les plats",
+      btn_antipasti: "Entrées",
+      btn_primi: "Premiers",
+      btn_polpette: "Boulettes pour tous",
+      btn_secondi: "Plats",
+      btn_contorni: "Accompagnements",
+      btn_pinse: "Pinsa",
+      btn_insalatone: "Salades",
+      btn_dolci: "Desserts",
+      scroll_hint: "⬇️ Faites défiler ou touchez une catégorie",
+      sec_antipasti: "Entrées",
+      sec_primi: "Premiers",
+      sec_polpette: "Boulettes",
+      sec_secondi: "Plats",
+      sec_contorni: "Accompagnements",
+      sec_pinse: "Pinsa",
+      sec_insalatone: "Salades",
+      sec_dolci: "Desserts",
+      tag_antipasto: "Entrée",
+      tag_primo: "Premier",
+      tag_polpette: "Boulettes",
+      tag_secondo: "Plat",
+      tag_contorno: "Accompagnement",
+      tag_pinsa: "Pinsa",
+      tag_insalatona: "Salade",
+      tag_dolce: "Dessert",
+      tag_extra: "Extra",
+      allergens_title: ALLERGENS.fr.title,
+      allergens_text: ALLERGENS.fr.text,
+      footer_line: "© Tonnarello • Allergènes : demandez au personnel",
+      service_line: "service pour les garçons qui vous ont servi etve souri 5%",
+      lb_hint: "Cliquez dehors ou appuyez sur Échap pour fermer"
+    },
+
+    ko: {
+      hero_sub: "디지털 메뉴 • 카테고리를 눌러 메뉴를 확인하세요",
+      btn_antipasti: "전채",
+      btn_primi: "파스타",
+      btn_polpette: "미트볼",
+      btn_secondi: "메인",
+      btn_contorni: "사이드",
+      btn_pinse: "핀사",
+      btn_insalatone: "샐러드",
+      btn_dolci: "디저트",
+      scroll_hint: "⬇️ 스크롤하거나 카테고리를 누르세요",
+      sec_antipasti: "전채",
+      sec_primi: "파스타",
+      sec_polpette: "미트볼",
+      sec_secondi: "메인",
+      sec_contorni: "사이드",
+      sec_pinse: "핀사",
+      sec_insalatone: "샐러드",
+      sec_dolci: "디저트",
+      tag_antipasto: "전채",
+      tag_primo: "파스타",
+      tag_polpette: "미트볼",
+      tag_secondo: "메인",
+      tag_contorno: "사이드",
+      tag_pinsa: "핀사",
+      tag_insalatona: "샐러드",
+      tag_dolce: "디저트",
+      tag_extra: "추가",
+      allergens_title: ALLERGENS.ko.title,
+      allergens_text: ALLERGENS.ko.text,
+      footer_line: "© Tonnarello • 알레르기 유발 물질: 직원에게 문의",
+      service_line: "서비스 요금(직원) 5%",
+      lb_hint: "바깥을 클릭하거나 ESC를 누르면 닫힙니다"
+    },
+
+    ja: {
+      hero_sub: "デジタルメニュー • カテゴリーをタップしてください",
+      btn_antipasti: "前菜",
+      btn_primi: "パスタ",
+      btn_polpette: "ミートボール",
+      btn_secondi: "メイン",
+      btn_contorni: "付け合わせ",
+      btn_pinse: "ピンサ",
+      btn_insalatone: "サラダ",
+      btn_dolci: "デザート",
+      scroll_hint: "⬇️ スクロール または カテゴリーをタップ",
+      sec_antipasti: "前菜",
+      sec_primi: "パスタ",
+      sec_polpette: "ミートボール",
+      sec_secondi: "メイン",
+      sec_contorni: "付け合わせ",
+      sec_pinse: "ピンサ",
+      sec_insalatone: "サラダ",
+      sec_dolci: "デザート",
+      tag_antipasto: "前菜",
+      tag_primo: "パスタ",
+      tag_polpette: "ミートボール",
+      tag_secondo: "メイン",
+      tag_contorno: "付け合わせ",
+      tag_pinsa: "ピンサ",
+      tag_insalatona: "サラダ",
+      tag_dolce: "デザート",
+      tag_extra: "追加",
+      allergens_title: ALLERGENS.ja.title,
+      allergens_text: ALLERGENS.ja.text,
+      footer_line: "© Tonnarello • アレルゲン: スタッフに確認してください",
+      service_line: "サービス料(スタッフ) 5%",
+      lb_hint: "外側をクリック、または ESC で閉じる"
+    },
+
+    zh: {
+      hero_sub: "电子菜单 • 点击分类查看菜品",
+      btn_antipasti: "前菜",
+      btn_primi: "意面",
+      btn_polpette: "肉丸",
+      btn_secondi: "主菜",
+      btn_contorni: "配菜",
+      btn_pinse: "Pinsa",
+      btn_insalatone: "沙拉",
+      btn_dolci: "甜点",
+      scroll_hint: "⬇️ 滑动或点击分类",
+      sec_antipasti: "前菜",
+      sec_primi: "意面",
+      sec_polpette: "肉丸",
+      sec_secondi: "主菜",
+      sec_contorni: "配菜",
+      sec_pinse: "Pinsa",
+      sec_insalatone: "沙拉",
+      sec_dolci: "甜点",
+      tag_antipasto: "前菜",
+      tag_primo: "意面",
+      tag_polpette: "肉丸",
+      tag_secondo: "主菜",
+      tag_contorno: "配菜",
+      tag_pinsa: "Pinsa",
+      tag_insalatona: "沙拉",
+      tag_dolce: "甜点",
+      tag_extra: "加料",
+      allergens_title: ALLERGENS.zh.title,
+      allergens_text: ALLERGENS.zh.text,
+      footer_line: "© Tonnarello • 过敏原: 请咨询工作人员",
+      service_line: "服务费(员工) 5%",
+      lb_hint: "点击外部或按 ESC 关闭"
+    },
+
+    ar: {
+      hero_sub: "قائمة رقمية • اضغط على الفئة لعرض الأطباق",
+      btn_antipasti: "مقبلات",
+      btn_primi: "باستا",
+      btn_polpette: "كرات لحم",
+      btn_secondi: "طبق رئيسي",
+      btn_contorni: "أطباق جانبية",
+      btn_pinse: "بينسا",
+      btn_insalatone: "سلطات",
+      btn_dolci: "حلويات",
+      scroll_hint: "⬇️ مرّر أو اضغط على فئة",
+      sec_antipasti: "مقبلات",
+      sec_primi: "باستا",
+      sec_polpette: "كرات لحم",
+      sec_secondi: "أطباق رئيسية",
+      sec_contorni: "أطباق جانبية",
+      sec_pinse: "بينسا",
+      sec_insalatone: "سلطات",
+      sec_dolci: "حلويات",
+      tag_antipasto: "مقبلات",
+      tag_primo: "باستا",
+      tag_polpette: "كرات لحم",
+      tag_secondo: "رئيسي",
+      tag_contorno: "جانبي",
+      tag_pinsa: "بينسا",
+      tag_insalatona: "سلطة",
+      tag_dolce: "حلوى",
+      tag_extra: "إضافي",
+      allergens_title: ALLERGENS.ar.title,
+      allergens_text: ALLERGENS.ar.text,
+      footer_line: "© Tonnarello • مسببات الحساسية: اسأل الموظفين",
+      service_line: "رسوم خدمة (الموظفين) 5%",
+      lb_hint: "انقر خارجًا أو اضغط ESC للإغلاق"
+    }
+  };
 
     // ✅ struttura pronta: qui puoi (poi) mettere le descrizioni tradotte per lingua
     const DESC = {
@@ -2069,68 +2085,118 @@ Pour plus d'informations, demandez au personnel.`,
     gelato_desc: "جيلاتو كريما “أفوغاتو” مع إسبريسو."
   }
 };
-    function renderAllergens(lang){
-      const a = ALLERGENS[lang] || ALLERGENS.it;
-      const grid = document.getElementById("allergenGrid");
-      if(!grid) return;
+      function renderAllergens(lang){
+    const a = ALLERGENS[lang] || ALLERGENS.it;
+    const grid = document.getElementById("allergenGrid");
+    if(!grid) return;
+    const items = (a && Array.isArray(a.items)) ? a.items : [];
+    grid.innerHTML = items.map((name, idx) => `
+      <div class="allergen-item">
+        <div class="allergen-num">${idx+1}</div>
+        <div class="allergen-name">${name}</div>
+      </div>
+    `).join("");
+  }
 
-      const items = (a && Array.isArray(a.items)) ? a.items : [];
-      grid.innerHTML = items.map((name, idx) => `
-        <div class="allergen-item">
-          <div class="allergen-num">${idx+1}</div>
-          <div class="allergen-name">${name}</div>
-        </div>
-      `).join("");
-    }
-function safeGet(key){
-  try { return localStorage.getItem(key); } catch(e){ return null; }
-}
-function safeSet(key, val){
-  try { localStorage.setItem(key, val); } catch(e){ /* ignore */ }
-}
-   function applyLang(lang){
-  document.documentElement.lang = lang;
+  // ===== Estrae allergeni UNA VOLTA dalle descrizioni HTML e li salva in data-allergens =====
+  function extractAllergensToDataset(){
+    document.querySelectorAll(".card").forEach(card => {
+      const desc = card.querySelector(".desc");
+      if(!desc) return;
 
-  // RTL per arabo
-  document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+      if (card.dataset.allergens && card.dataset.allergens.length) return; // ✅ una sola volta
 
-  // 1) UI (bottoni, titoli, ecc.)
-  const ui = UI[lang] || UI.it;
-  document.querySelectorAll("[data-ui]").forEach(el => {
-    const key = el.getAttribute("data-ui");
-    if (ui && ui[key]) el.textContent = ui[key];
-  });
+      const text = (desc.textContent || "").trim();
+      const m = text.match(/(\b\d{1,2}(?:-\d{1,2})*\b)\s*\.?\s*$/);
+      if(!m) return;
 
-  // 2) Descrizioni piatti
-  const d = (DESC[lang] || DESC.it);
-  document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
-    const key = p.getAttribute("data-desc-key");
-    if (d && d[key]) p.textContent = d[key];
-  });
+      const nums = m[1].trim();
+      if(!nums) return;
 
-  // 3) Box allergeni (titolo/testo/griglia)
-  const a = ALLERGENS[lang] || ALLERGENS.it;
-  const t = document.querySelector('[data-ui="allergens_title"]');
-  const txt = document.querySelector('[data-ui="allergens_text"]');
-  if(t && a && a.title) t.textContent = a.title;
-  if(txt && a && a.text) txt.textContent = a.text;
+      card.dataset.allergens = nums;
+      desc.textContent = text.replace(m[0], "").trim();
+    });
+  }
 
-  renderAllergens(lang);
+  // ===== Crea pillole allergeni dai data-allergens =====
+  function buildAllergenPills(){
+    document.querySelectorAll(".card").forEach(card => {
+      const row = card.querySelector(".row");
+      if(!row) return;
 
-  // ✅ 4) IMPORTANTISSIMO:
-  // dopo la traduzione, riestrai i numeri allergeni dalle descrizioni
-  // e ricrea le pillole
-  extractAllergensToDataset();
-  buildAllergenPills();
+      const old = row.querySelector(".allergen-pill");
+      if(old) old.remove();
 
-  safeSet("menu_lang", lang);
-}
+      const nums = (card.dataset.allergens || "").trim();
+      if(!nums) return;
 
-      // ✅ dopo cambio lingua, ricrea pillole allergeni (da data-allergens)
-      buildAllergenPills();
-safeSet("menu_lang", lang);
-    }
- // ===== FALLBACK immagini mancanti =====
+      const tag = row.querySelector(".tag");
+      const price = row.querySelector(".price");
+      if(!tag || !price) return;
+
+      let left = row.querySelector(".meta-left");
+      if(!left){
+        left = document.createElement("span");
+        left.className = "meta-left";
+        row.insertBefore(left, price);
+        left.appendChild(tag);
+      } else {
+        if(tag.parentElement !== left){
+          left.insertBefore(tag, left.firstChild);
+        }
+      }
+
+      const pill = document.createElement("span");
+      pill.className = "allergen-pill";
+      pill.textContent = nums;
+      left.insertBefore(pill, left.children[1] || null);
+    });
+  }
+
+  // ===== Foto cliccabili =====
+  function markDishPhotos(){
+    document.querySelectorAll(".card").forEach(card => {
+      const topImg = card.querySelector("img");
+      if(topImg) topImg.classList.add("dish-photo");
+    });
+  }
+
+  // ===== Applica lingua =====
+  function applyLang(lang){
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+
+    // UI
+    const ui = UI[lang] || UI.it;
+    document.querySelectorAll("[data-ui]").forEach(el => {
+      const key = el.getAttribute("data-ui");
+      if (ui && ui[key]) el.textContent = ui[key];
+    });
+
+    // Descrizioni
+    const d = (DESC[lang] || DESC.it || {});
+    document.querySelectorAll(".desc[data-desc-key]").forEach(p => {
+      const key = p.getAttribute("data-desc-key");
+      if (d && d[key]) p.textContent = d[key];
+    });
+
+    // Allergeni box
+    const a = ALLERGENS[lang] || ALLERGENS.it;
+    const t = document.querySelector('[data-ui="allergens_title"]');
+    const txt = document.querySelector('[data-ui="allergens_text"]');
+    if(t && a && a.title) t.textContent = a.title;
+    if(txt && a && a.text) txt.textContent = a.text;
+
+    renderAllergens(lang);
+
+    // pillole (usano data-allergens già salvato)
+    buildAllergenPills();
+
+    safeSet("menu_lang", lang);
+  }
+
+  // ===== FALLBACK immagini mancanti =====
+  function attachImageFallback(){
     document.querySelectorAll(".card img").forEach(img => {
       img.addEventListener("error", () => {
         if (img.dataset.fallbackApplied) return;
@@ -2141,170 +2207,60 @@ safeSet("menu_lang", lang);
         img.style.cursor = "default";
       });
     });
+  }
 
-    // ===== LIGHTBOX =====
-    const lb = document.getElementById("lightbox");
-    const lbImg = document.getElementById("lbImg");
-    const lbClose = document.getElementById("lbClose");
+  // ===== LIGHTBOX =====
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbClose = document.getElementById("lbClose");
 
-    function openLightbox(src, alt){
-      if (src && src.startsWith("data:image/svg+xml")) return;
-      lbImg.src = src;
-      lbImg.alt = alt || "";
-      lb.classList.add("open");
-      lb.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+  function openLightbox(src, alt){
+    if (src && src.startsWith("data:image/svg+xml")) return;
+    lbImg.src = src;
+    lbImg.alt = alt || "";
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeLightbox(){
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+    lbImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  // ===== INIT =====
+  window.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("langSelect");
+    const saved = safeGet("menu_lang") || "it";
+
+    if (select){
+      select.value = saved;
+
+      const onLang = (e) => applyLang(e.target.value);
+      select.addEventListener("change", onLang);
+      select.addEventListener("input", onLang); // ✅ mobile
     }
-    function closeLightbox(){
-      lb.classList.remove("open");
-      lb.setAttribute("aria-hidden", "true");
-      lbImg.src = "";
-      document.body.style.overflow = "";
-    }
+
+    attachImageFallback();
+    markDishPhotos();
+
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest("img.dish-photo");
+      if(!img) return;
+      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    });
 
     lbClose && lbClose.addEventListener("click", closeLightbox);
     lb && lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
     document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
 
-    function markDishPhotos(){
-  document.querySelectorAll(".card").forEach(card => {
-    // prende la prima immagine dentro la card (di fatto è quella in alto)
-    const topImg = card.querySelector("img");
-    if(topImg) topImg.classList.add("dish-photo");
-  });
-}
-
-    // ✅ FIX: blocco righe in basso uguale per tutte le card
-    function lockBottomRow(){
-      document.querySelectorAll(".card .content").forEach(c => {
-        c.style.display = "flex";
-        c.style.flexDirection = "column";
-        c.style.height = "100%";
-      });
-
-      document.querySelectorAll(".card .row").forEach(r => {
-        r.style.marginTop = "auto";  // ✅ spinge sempre in basso
-      });
-    }
-
-    // ✅ 1) Estrae allergeni e li salva su dataset
-    function extractAllergensToDataset(){
-      document.querySelectorAll(".card").forEach(card => {
-        const desc = card.querySelector(".desc");
-        if(!desc) return;
-
-       // non bloccare: dopo applyLang serve riestrazione
-
-        const text = (desc.textContent || "").trim();
-        const m = text.match(/(\b\d{1,2}(?:-\d{1,2})*\b)\s*\.?\s*$/);
-        if(!m) return;
-
-        const nums = m[1].trim();
-        if(!nums) return;
-
-        card.dataset.allergens = nums;
-        desc.textContent = text.replace(m[0], "").trim();
-      });
-    }
-
-    // ✅ 2) Crea pillole allergeni
-    function buildAllergenPills(){
-      document.querySelectorAll(".card").forEach(card => {
-        const row = card.querySelector(".row");
-        if(!row) return;
-
-        const old = row.querySelector(".allergen-pill");
-        if(old) old.remove();
-
-        const nums = (card.dataset.allergens || "").trim();
-        if(!nums) return;
-
-        const tag = row.querySelector(".tag");
-        const price = row.querySelector(".price");
-        if(!tag || !price) return;
-
-        let left = row.querySelector(".meta-left");
-        if(!left){
-          left = document.createElement("span");
-          left.className = "meta-left";
-          row.insertBefore(left, price);
-          left.appendChild(tag);
-        } else {
-          if(tag.parentElement !== left){
-            left.insertBefore(tag, left.firstChild);
-          }
-        }
-
-        const pill = document.createElement("span");
-        pill.className = "allergen-pill";
-        pill.textContent = nums; // ✅ senza "A"
-
-        left.insertBefore(pill, left.children[1] || null);
-      });
-    }
-
-    // ===== INIT =====
-window.addEventListener("DOMContentLoaded", () => {
-  try {
-    const select = document.getElementById("langSelect");
-    const saved = safeGet("menu_lang") || "it";
-
-    if (select) {
-      const ensureOpt = (val, label) => {
-        if ([...select.options].some(o => o.value === val)) return;
-        const o = document.createElement("option");
-        o.value = val;
-        o.textContent = label;
-        select.appendChild(o);
-      };
-
-      ensureOpt("ko","🇰🇷 KO");
-      ensureOpt("ja","🇯🇵 JA");
-      ensureOpt("zh","🇨🇳 ZH");
-      ensureOpt("ar","🇸🇦 AR");
-
-      select.value = saved;
-
-      const onLang = (e) => applyLang(e.target.value);
-      select.addEventListener("change", onLang);
-      select.addEventListener("input", onLang); // iPhone
-    }
-
-    markDishPhotos();
-
-    document.addEventListener("click", (e) => {
-      const img = e.target.closest("img.dish-photo");
-      if (!img) return;
-      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
-    });
-
+    // ✅ prima estrai numeri allergeni una volta (dal testo HTML originale)
     extractAllergensToDataset();
 
-    if (typeof lockBottomRow === "function") {
-      lockBottomRow();
-    }
-
+    // ✅ poi applica lingua (UI + descrizioni + griglia allergeni + pillole)
     applyLang(saved);
-
-  } catch (err) {
-    console.error("MENU ERROR:", err);
-  }
-});
-
-function markDishPhotos(){
-  document.querySelectorAll(".card").forEach(card => {
-    const topImg = card.querySelector("img"); // ✅ NO :scope
-    if(topImg) topImg.classList.add("dish-photo");
   });
-}
-
-   extractAllergensToDataset();
-
-if (typeof lockBottomRow === "function") {
-  lockBottomRow(); // ✅ prezzo/tag sempre in basso
-}
-
-applyLang(saved);
   </script>
 </body>
 </html>
