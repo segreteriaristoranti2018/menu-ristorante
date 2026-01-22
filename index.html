@@ -1229,28 +1229,31 @@
     artichoke: { type:"img", src:"./icons/carciofo.png" }
   };
 
-  function applyDishIcons(){
+function applyDishIcons(){
   document.querySelectorAll(".card[data-icons]").forEach(card => {
     const list = (card.dataset.icons || "")
       .split(",").map(s => s.trim()).filter(Boolean);
     if(!list.length) return;
 
-    // punti dove metterle: accanto alla pill (dentro .row)
     const row = card.querySelector(".row");
-    const tag = row ? row.querySelector(".tag") : null;
-    if(!row || !tag) return;
+    if(!row) return;
+
+    const tag = row.querySelector(".tag");
+    const price = row.querySelector(".price");
+    if(!tag || !price) return;
 
     // evita duplicati
     if(row.querySelector(".dish-icons")) return;
 
-    // crea contenitore sinistro (tag + icone)
-   const row = card.querySelector(".row");
-const tag = row ? row.querySelector(".tag") : null;
-if(!row || !tag) return;
+    // ✅ crea (o recupera) il contenitore sinistro
+    let left = row.querySelector(".meta-left");
+    if(!left){
+      left = document.createElement("span");
+      left.className = "meta-left";
+      row.insertBefore(left, price);   // left prima del prezzo
+      left.appendChild(tag);           // sposta la pillola dentro left
+    }
 
-tag.insertAdjacentElement("afterend", wrap);
-
-    // wrapper icone
     const wrap = document.createElement("span");
     wrap.className = "dish-icons";
 
@@ -1271,11 +1274,10 @@ tag.insertAdjacentElement("afterend", wrap);
         img.draggable = false;
         badge.appendChild(img);
       }
-
       wrap.appendChild(badge);
     });
 
-    // ✅ icone attaccate alla pill
+    // ✅ icone accanto alla pillola, sempre a sinistra
     left.appendChild(wrap);
   });
 }
