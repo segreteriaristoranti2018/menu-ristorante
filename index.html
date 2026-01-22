@@ -2082,7 +2082,12 @@ Pour plus d'informations, demandez au personnel.`,
         </div>
       `).join("");
     }
-
+function safeGet(key){
+  try { return localStorage.getItem(key); } catch(e){ return null; }
+}
+function safeSet(key, val){
+  try { localStorage.setItem(key, val); } catch(e){ /* ignore */ }
+}
     function applyLang(lang){
       document.documentElement.lang = lang;
 
@@ -2105,8 +2110,7 @@ Pour plus d'informations, demandez au personnel.`,
 
       // ✅ dopo cambio lingua, ricrea pillole allergeni (da data-allergens)
       buildAllergenPills();
-
-      localStorage.setItem("menu_lang", lang);
+safeSet("menu_lang", lang);
     }
  // ===== FALLBACK immagini mancanti =====
     document.querySelectorAll(".card img").forEach(img => {
@@ -2223,7 +2227,7 @@ Pour plus d'informations, demandez au personnel.`,
     // ===== INIT =====
     window.addEventListener("DOMContentLoaded", () => {
       const select = document.getElementById("langSelect");
-      const saved = localStorage.getItem("menu_lang") || "it";
+   const saved = safeGet("menu_lang") || "it";
 
       // ✅ aggiungi lingue al select
       if(select){
@@ -2242,7 +2246,9 @@ Pour plus d'informations, demandez au personnel.`,
         ensureOpt("ar","🇸🇦 AR");
 
         select.value = saved;
-        select.addEventListener("change", e => applyLang(e.target.value));
+const onLang = (e) => applyLang(e.target.value);
+select.addEventListener("change", onLang);
+select.addEventListener("input", onLang); // ✅ mobile
       }
 
       markDishPhotos();
