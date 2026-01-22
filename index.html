@@ -2149,11 +2149,12 @@ safeSet("menu_lang", lang);
     document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
 
     function markDishPhotos(){
-      document.querySelectorAll(".card").forEach(card => {
-        const topImg = card.querySelector(":scope > img");
-        if(topImg) topImg.classList.add("dish-photo");
-      });
-    }
+  document.querySelectorAll(".card").forEach(card => {
+    // prende la prima immagine dentro la card (di fatto è quella in alto)
+    const topImg = card.querySelector("img");
+    if(topImg) topImg.classList.add("dish-photo");
+  });
+}
 
     // ✅ FIX: blocco righe in basso uguale per tutte le card
     function lockBottomRow(){
@@ -2225,39 +2226,58 @@ safeSet("menu_lang", lang);
     }
 
     // ===== INIT =====
-    window.addEventListener("DOMContentLoaded", () => {
-      const select = document.getElementById("langSelect");
-   const saved = safeGet("menu_lang") || "it";
+  window.addEventListener("DOMContentLoaded", () => {
+  try {
+    const select = document.getElementById("langSelect");
+    const saved = safeGet("menu_lang") || "it";
 
-      // ✅ aggiungi lingue al select
-      if(select){
-        // se non esistono già, le aggiungo
-        const ensureOpt = (val, label) => {
-          if([...select.options].some(o => o.value === val)) return;
-          const o = document.createElement("option");
-          o.value = val;
-          o.textContent = label;
-          select.appendChild(o);
-        };
+    // ✅ aggiungi lingue al select
+    if (select) {
+      const ensureOpt = (val, label) => {
+        if ([...select.options].some(o => o.value === val)) return;
+        const o = document.createElement("option");
+        o.value = val;
+        o.textContent = label;
+        select.appendChild(o);
+      };
 
-        ensureOpt("ko","🇰🇷 KO");
-        ensureOpt("ja","🇯🇵 JA");
-        ensureOpt("zh","🇨🇳 ZH");
-        ensureOpt("ar","🇸🇦 AR");
+      ensureOpt("ko","🇰🇷 KO");
+      ensureOpt("ja","🇯🇵 JA");
+      ensureOpt("zh","🇨🇳 ZH");
+      ensureOpt("ar","🇸🇦 AR");
 
-        select.value = saved;
-const onLang = (e) => applyLang(e.target.value);
-select.addEventListener("change", onLang);
-select.addEventListener("input", onLang); // ✅ mobile
-      }
+      select.value = saved;
 
-      markDishPhotos();
+      const onLang = (e) => applyLang(e.target.value);
+      select.addEventListener("change", onLang);
+      select.addEventListener("input", onLang); // ✅ mobile
+    }
 
-      document.addEventListener("click", (e) => {
-        const img = e.target.closest("img.dish-photo");
-        if(!img) return;
-        openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
-      });
+    // ✅ IMPORTANTISSIMO: niente :scope (Safari iOS)
+    markDishPhotos();
+
+    // ✅ click lightbox
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest("img.dish-photo");
+      if(!img) return;
+      openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    });
+
+    // ✅ crea dataset allergeni + poi lingua (che ricrea pillole e griglia)
+    extractAllergensToDataset();
+    applyLang(saved);
+
+  } catch (err) {
+    console.error("MENU ERROR:", err);
+  }
+});
+
+function markDishPhotos(){
+  document.querySelectorAll(".card").forEach(card => {
+    const topImg = card.querySelector("img"); // ✅ NO :scope
+    if(topImg) topImg.classList.add("dish-photo");
+  });
+}
 
       extractAllergensToDataset();
       lockBottomRow();          // ✅ prezzo/tag sempre in basso
