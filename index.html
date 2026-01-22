@@ -213,21 +213,24 @@
     }
 
     /* ✅ pillola allergeni (piccola) */
-    .allergen-pill{
+.allergen-pill{
   font-size: 10.5px;
-  padding: 3px 6px;
+  padding: 3px 7px;
   border-radius: 999px;
 
-  background: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.70);
   color:#111;
 
-  border: 2px dotted rgba(190,70,90,0.85); /* ✅ puntinato come la griglia */
-  outline: 1px solid rgba(255,255,255,0.30);
+  /* puntinato più fine e soft */
+  border: 1.6px dotted rgba(190,70,90,0.70);
+
+  /* micro bordo esterno leggero (fa “staccare” sul bianco) */
+  outline: 1px solid rgba(0,0,0,0.06);
   outline-offset: 2px;
 
   white-space: nowrap;
   flex: 0 0 auto;
-
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   max-width: 92px;
   overflow: hidden;
   text-overflow: ellipsis;
