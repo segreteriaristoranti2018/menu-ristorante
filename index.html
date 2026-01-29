@@ -1195,18 +1195,17 @@ Para más información, consulte al personal.`,
         "Altramuces","Moluscos"
       ]
     },
-    pt: {
-      title: "Alergénios",
-      text:
-`De acordo com o Regulamento (UE) 1169/2011, os alimentos e bebidas preparados neste restaurante podem conter alergénios.
-Para mais informações, pergunte à equipa.`,
-      items: [
-        "Cereais com glúten","Crustáceos","Ovos","Peixe",
-        "Amendoins","Soja","Leite","Frutos de casca rija",
-        "Aipo","Mostarda","Sésamo","Sulfitos",
-        "Tremoço","Moluscos"
-      ]
-    },
+   pt: {
+  title: "Alergénios",
+  text: `De acordo com o Regulamento (UE) 1169/2011, os alimentos e bebidas preparados neste restaurante podem conter alergénios.
+Para mais informações, fale com a nossa equipa.`,
+  items: [
+    "Cereais com glúten", "Crustáceos", "Ovos", "Peixe",
+    "Amendoins", "Soja", "Leite", "Frutos de casca rija",
+    "Aipo", "Mostarda", "Sésamo", "Sulfitos",
+    "Tremoço", "Moluscos"
+  ]
+},
     fr: {
       title: "Allergènes",
       text:
@@ -2417,9 +2416,13 @@ function attachImageFallback(){
       img.style.background = "#fff";
       img.style.cursor = "default";
 
-      // ✅ importantissimo: niente zoom/lightbox sul placeholder
       img.dataset.noZoom = "1";
     });
+
+    // ✅ se già rotta prima che JS attacchi l’handler
+    if (img.complete && img.naturalWidth === 0) {
+      img.dispatchEvent(new Event("error"));
+    }
   });
 }
 
@@ -2443,7 +2446,20 @@ function attachImageFallback(){
     lbImg.src = "";
     document.body.style.overflow = "";
   }
+function onDishTap(e){
+  const img = e.target.closest(".card img");
+  if(!img) return;
 
+  const src = img.getAttribute("src") || "";
+
+  if (img.dataset.noZoom === "1") return;
+  if (src.startsWith("data:image/svg+xml")) return;
+
+  openLightbox(src, img.getAttribute("alt"));
+}
+
+document.addEventListener("click", onDishTap);
+document.addEventListener("touchend", onDishTap, { passive: true });
   // ===== INIT =====
   window.addEventListener("DOMContentLoaded", () => {
     const select = document.getElementById("langSelect");
@@ -2465,21 +2481,29 @@ function attachImageFallback(){
     }
     applyLang(saved);
 
-    // click immagini => lightbox
-document.addEventListener("click", (e) => {
+// click/tap immagini => lightbox (desktop + mobile)
+function onDishTap(e){
   const img = e.target.closest(".card img");
   if(!img) return;
 
-  // ✅ blocca zoom se è placeholder
-  if(img.dataset.noZoom === "1") return;
+  const src = img.getAttribute("src") || "";
 
-  openLightbox(img.getAttribute("src"), img.getAttribute("alt"));
-});
+  // ✅ blocca zoom se placeholder o se marcata noZoom
+  if (img.dataset.noZoom === "1") return;
+  if (src.startsWith("data:image/svg+xml")) return;
 
-    lbClose && lbClose.addEventListener("click", closeLightbox);
-    lb && lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
-    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
-  });
+  openLightbox(src, img.getAttribute("alt"));
+}
+
+// desktop + android
+document.addEventListener("click", onDishTap);
+
+// ✅ iPhone/iPad: tap
+document.addEventListener("touchend", onDishTap, { passive: true });
+
+lbClose && lbClose.addEventListener("click", closeLightbox);
+lb && lb.addEventListener("click", (e) => { if(e.target === lb) closeLightbox(); });
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
   </script>
 
 </body>
